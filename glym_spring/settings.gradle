@@ -1,1 +1,2 @@
 rootProject.name = 'gllim_spring'
+include ':glym_spring'
