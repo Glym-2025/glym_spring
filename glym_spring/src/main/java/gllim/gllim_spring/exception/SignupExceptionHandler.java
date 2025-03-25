@@ -1,0 +1,27 @@
+package gllim.gllim_spring.exception;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import gllim.gllim_spring.exception.ErrorResponse;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@RestControllerAdvice
+@Slf4j
+//회원가입시 발생할 수 있는 에러들
+public class SignupExceptionHandler {
+
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<ErrorResponse> handleDuplicateEmail(CustomException e){
+        log.error("SignupException 발생: {}", e.getMessage(), e);
+
+        ErrorCode errorCode = e.getErrorCode();
+
+        ErrorResponse response = ErrorResponse.builder()
+                .errorCode(errorCode)
+                .errorMessage(errorCode.getMessage())
+                .build();
+
+        return ResponseEntity.status(errorCode.getStatus()).body(response);
+    }
+}
