@@ -1,5 +1,6 @@
 package glym.glym_spring.domain.font.domain;
 
+import glym.glym_spring.domain.font.domain.Font;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
