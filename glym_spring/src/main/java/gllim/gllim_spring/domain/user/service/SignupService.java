@@ -21,11 +21,15 @@ public class SignupService {
         if (userRepository.findByEmail(signupRequestDto.getEmail()).isPresent()) {
             throw new CustomException(ErrorCode.EMAIL_ALREADY_EXISTS);
         }
+        if(userRepository.findByPhone(signupRequestDto.getPhone()).isPresent()) {
+            throw new CustomException(ErrorCode.PHONENUMBER_ALREADY_EXISTS);
+        }
 
         User newUser = User.builder()
                 .username(signupRequestDto.getUsername())
                 .password(passwordEncoder.encode(signupRequestDto.getPassword()))
                 .email(signupRequestDto.getEmail())
+                .phone(signupRequestDto.getPhone())
                 .build();
 
         userRepository.save(newUser);
