@@ -26,6 +26,7 @@ public class SignupService {
                 .username(signupRequestDto.getUsername())
                 .password(passwordEncoder.encode(signupRequestDto.getPassword()))
                 .email(signupRequestDto.getEmail())
+                .phone(signupRequestDto.getPhone())
                 .build();
 
         userRepository.save(newUser);
