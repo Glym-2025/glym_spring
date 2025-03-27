@@ -1,4 +1,4 @@
-package gllim.gllim_spring.exception;
+package gllim.gllim_spring.global.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

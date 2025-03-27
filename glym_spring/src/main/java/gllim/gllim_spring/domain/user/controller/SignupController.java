@@ -1,15 +1,13 @@
-package gllim.gllim_spring.controller;
+package gllim.gllim_spring.domain.user.controller;
 
-import gllim.gllim_spring.dto.SignupRequestDto;
-import gllim.gllim_spring.service.SignupService;
+import gllim.gllim_spring.domain.user.dto.SignupRequestDto;
+import gllim.gllim_spring.domain.user.service.SignupService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package gllim.gllim_spring.controller;
+package gllim.gllim_spring.global.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

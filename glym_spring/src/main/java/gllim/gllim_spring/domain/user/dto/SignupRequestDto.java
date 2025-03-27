@@ -1,4 +1,4 @@
-package gllim.gllim_spring.dto;
+package gllim.gllim_spring.domain.user.dto;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,5 +15,6 @@ public class SignupRequestDto {
     private final String password;
     @NotBlank
     private final String username;
-
+    @NotBlank
+    private final String phone;
 }

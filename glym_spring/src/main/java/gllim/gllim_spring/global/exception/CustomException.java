@@ -1,6 +1,5 @@
-package gllim.gllim_spring.exception;
+package gllim.gllim_spring.global.exception;
 
-import ch.qos.logback.core.spi.ErrorCodes;
 import lombok.Getter;
 
 @Getter

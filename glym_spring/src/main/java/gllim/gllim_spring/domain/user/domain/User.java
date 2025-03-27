@@ -1,26 +1,35 @@
-package gllim.gllim_spring.entity;
+package gllim.gllim_spring.domain.user.domain;
 
+import gllim.gllim_spring.domain.font.domain.Font;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserEntity {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "user_id")
+    private Long id;
 
+    @Column(nullable = false, unique = true)
     private String email;
+
     private String password;
     private String username;
+
+    @Column(nullable = false, unique = true)
+    private String phone;
 
     @Column(name = "profile_image_url")
     private String profileImageURL;
@@ -44,8 +53,23 @@ public class UserEntity {
     private boolean isActive;
 
     private String status = "ACTIVE";   // ACTIVE, DORMANT, WITHDRAWN
-
     private String role = "USER";    //USER, ADMIN
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Font> fonts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<RefreshToken> refreshTokens = new ArrayList<>();
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 
 }

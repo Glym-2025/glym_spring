@@ -1,4 +1,4 @@
-package gllim.gllim_spring.config;
+package gllim.gllim_spring.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
