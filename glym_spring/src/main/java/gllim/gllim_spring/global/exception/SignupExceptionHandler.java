@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class SignupExceptionHandler {
 
     @ExceptionHandler(CustomException.class)
-    public ResponseEntity<ErrorResponse> handleDuplicateEmail(CustomException e){
-        log.error("SignupException 발생: {}", e.getMessage(), e);
+    public ResponseEntity<ErrorResponse> handleCustomException(CustomException e){
+        log.error("CustomException 발생: {}", e.getMessage(), e);
 
         ErrorCode errorCode = e.getErrorCode();
 
@@ -23,4 +23,5 @@ public class SignupExceptionHandler {
 
         return ResponseEntity.status(errorCode.getStatus()).body(response);
     }
+
 }
