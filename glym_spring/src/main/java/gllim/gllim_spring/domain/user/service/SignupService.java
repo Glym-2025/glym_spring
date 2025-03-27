@@ -24,7 +24,7 @@ public class SignupService {
 
         User newUser = User.builder()
                 .username(signupRequestDto.getUsername())
-                .password(signupRequestDto.getPassword())
+                .password(passwordEncoder.encode(signupRequestDto.getPassword()))
                 .email(signupRequestDto.getEmail())
                 .build();
 
