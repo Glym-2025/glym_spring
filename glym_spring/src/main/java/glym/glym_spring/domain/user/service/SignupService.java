@@ -1,10 +1,10 @@
-package gllim.gllim_spring.domain.user.service;
+package glym.glym_spring.domain.user.service;
 
-import gllim.gllim_spring.domain.user.dto.SignupRequestDto;
-import gllim.gllim_spring.domain.user.domain.User;
-import gllim.gllim_spring.global.exception.CustomException;
-import gllim.gllim_spring.global.exception.ErrorCode;
-import gllim.gllim_spring.domain.user.repository.UserRepository;
+import glym.glym_spring.domain.user.dto.SignupRequestDto;
+import glym.glym_spring.domain.user.domain.User;
+import glym.glym_spring.global.exception.CustomException;
+import glym.glym_spring.global.exception.ErrorCode;
+import glym.glym_spring.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

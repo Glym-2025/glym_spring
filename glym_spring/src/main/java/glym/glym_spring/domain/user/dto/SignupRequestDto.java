@@ -1,4 +1,4 @@
-package gllim.gllim_spring.domain.user.dto;
+package glym.glym_spring.domain.user.dto;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

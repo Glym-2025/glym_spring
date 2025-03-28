@@ -1,4 +1,4 @@
-package gllim.gllim_spring.global.config;
+package glym.glym_spring.global.config;
 
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;

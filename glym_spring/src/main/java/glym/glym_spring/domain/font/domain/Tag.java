@@ -11,6 +11,7 @@ import java.util.Set;
 @Entity
 @Table(name = "tags")
 @Getter @Setter
+
 public class Tag {
 
     @Id

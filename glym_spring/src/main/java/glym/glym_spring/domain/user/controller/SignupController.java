@@ -1,9 +1,9 @@
-package gllim.gllim_spring.domain.user.controller;
+package glym.glym_spring.domain.user.controller;
 
-import gllim.gllim_spring.domain.user.dto.SignupRequestDto;
-import gllim.gllim_spring.domain.user.dto.SignupResponseDto;
-import gllim.gllim_spring.domain.user.service.SignupService;
-import gllim.gllim_spring.global.docs.SignupControllerDocs;
+import glym.glym_spring.domain.user.dto.SignupRequestDto;
+import glym.glym_spring.domain.user.dto.SignupResponseDto;
+import glym.glym_spring.domain.user.service.SignupService;
+import glym.glym_spring.global.docs.SignupControllerDocs;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

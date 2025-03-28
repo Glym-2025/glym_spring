@@ -1,6 +1,5 @@
-package gllim.gllim_spring.global.controller;
+package glym.glym_spring.global.controller;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 

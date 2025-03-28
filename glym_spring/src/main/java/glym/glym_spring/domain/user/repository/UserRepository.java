@@ -1,6 +1,6 @@
-package gllim.gllim_spring.domain.user.repository;
+package glym.glym_spring.domain.user.repository;
 
-import gllim.gllim_spring.domain.user.domain.User;
+import glym.glym_spring.domain.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

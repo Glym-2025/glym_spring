@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "fonts")
 @Getter @Setter
 public class Font {
-
+  
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "font_id")
@@ -91,3 +91,4 @@ public class Font {
         tag.getFonts().remove(this);
     }
 }
+

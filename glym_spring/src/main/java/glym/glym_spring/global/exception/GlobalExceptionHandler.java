@@ -1,4 +1,4 @@
-package gllim.gllim_spring.global.exception;
+package glym.glym_spring.global.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;

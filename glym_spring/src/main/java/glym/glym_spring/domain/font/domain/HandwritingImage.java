@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "handwriting_images")
+@Getter
+@Setter
 @Getter @Setter
 public class HandwritingImage {
 

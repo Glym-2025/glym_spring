@@ -1,12 +1,8 @@
-package gllim.gllim_spring.global.docs;
+package glym.glym_spring.global.docs;
 
-import gllim.gllim_spring.domain.user.dto.SignupRequestDto;
-import gllim.gllim_spring.domain.user.dto.SignupResponseDto;
+import glym.glym_spring.domain.user.dto.SignupRequestDto;
+import glym.glym_spring.domain.user.dto.SignupResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 
 public interface SignupControllerDocs {
