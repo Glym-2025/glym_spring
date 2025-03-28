@@ -1,6 +1,5 @@
 package glym.glym_spring.domain.font.domain;
 
-
 import glym.glym_spring.domain.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -15,6 +14,7 @@ import java.util.Set;
 @Table(name = "fonts")
 @Getter @Setter
 public class Font {
+  
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "font_id")
@@ -91,3 +91,4 @@ public class Font {
         tag.getFonts().remove(this);
     }
 }
+

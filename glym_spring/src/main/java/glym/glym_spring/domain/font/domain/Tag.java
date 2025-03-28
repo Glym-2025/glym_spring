@@ -1,5 +1,6 @@
 package glym.glym_spring.domain.font.domain;
 
+import glym.glym_spring.domain.font.domain.Font;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import java.util.Set;
 @Getter @Setter
 
 public class Tag {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tag_id")
