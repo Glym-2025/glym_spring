@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 @Entity
 @Table(name = "fonts")
 @Getter @Setter
@@ -29,19 +28,8 @@ public class Font {
 
     private String description;
 
-    @Column(name = "file_path")
-    private String filePath;
-
-    @Column(name = "thumbnail_path")
-    private String thumbnailPath;
-
     @Column(name = "s3_font_key")
     private String s3FontKey;
-
-    @Column(name = "s3_thumbnail_key")
-    private String s3ThumbnailKey;
-
-    private String status = "PROCESSING"; // PROCESSING, COMPLETE, FAILED
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

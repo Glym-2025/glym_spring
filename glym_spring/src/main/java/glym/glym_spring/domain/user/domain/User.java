@@ -2,22 +2,19 @@ package glym.glym_spring.domain.user.domain;
 
 import glym.glym_spring.domain.font.domain.Font;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
-@Getter @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -29,16 +26,19 @@ public class User {
     private String email;
 
     private String password;
-    private String nickname;
+    private String username;
+
+    @Column(nullable = false, unique = true)
+    private String phone;
 
     @Column(name = "profile_image_url")
-    private String profileImageUrl;
+    private String profileImageURL;
 
     @Column(name = "oauth_provider")
     private String oauthProvider;
 
     @Column(name = "oauth_id")
-    private String oauthId;
+    private String oauthID;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -50,10 +50,10 @@ public class User {
     private LocalDateTime lastLoginAt;
 
     @Column(name = "is_active")
-    private Boolean isActive = true;
+    private boolean isActive;
 
-    private String status = "ACTIVE"; // ACTIVE, DORMANT, WITHDRAWN
-    private String role = "USER"; // USER, ADMIN
+    private String status = "ACTIVE";   // ACTIVE, DORMANT, WITHDRAWN
+    private String role = "USER";    //USER, ADMIN
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Font> fonts = new ArrayList<>();
@@ -71,4 +71,6 @@ public class User {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
 }
+
