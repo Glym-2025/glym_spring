@@ -25,16 +25,14 @@ public enum ErrorCode {
     MARGIN_ERROR(HttpStatus.BAD_REQUEST, "이미지 여백이 요구사항을 충족하지 않습니다. 5~10px 이어야 합니다."),
 
     IMAGE_SAVE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,"이미지 저장 중 오류가 발생했습니다."),
+    UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,"알 수 없는 오류가 발생했습니다."),
 
-
-    IO_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "파일 처리 중 오류가 발생했습니다."),
-    UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "알 수 없는 오류가 발생했습니다."),
-
-
+    IO_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "파일 처리 중 오류가 발생했습니다.");
 
 
 
-    PHONENUMBER_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 사용 중인 휴대폰 번호입니다");
+
+
 
     private final HttpStatus status;
     private final String message;
