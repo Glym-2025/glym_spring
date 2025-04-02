@@ -40,10 +40,25 @@ dependencies {
 
 	compileOnly 'org.projectlombok:lombok'
 	implementation 'mysql:mysql-connector-java:8.0.33'
+	runtimeOnly 'mysql:mysql-connector-java'
+	implementation 'mysql:mysql-connector-java:8.0.33'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	runtimeOnly 'com.mysql:mysql-connector-j'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	//metadata 검증을 위한
+	implementation 'com.drewnoakes:metadata-extractor:2.18.0'
+	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.663'
+	implementation 'mysql:mysql-connector-java:8.0.33'
+
+
+	implementation 'com.amazonaws:aws-java-sdk-core:1.12.663'
+	implementation 'commons-io:commons-io:2.11.0'
+
+
+
 }
 
 tasks.named('test') {
