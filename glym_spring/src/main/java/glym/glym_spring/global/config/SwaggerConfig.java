@@ -24,7 +24,7 @@ import java.util.List;
         ),
         servers = {
                 @Server(url = "https://main.server.com", description = "메인 서버"),
-                @Server(url = "https://test.server.com", description = "테스트 서버"),
+                @Server(url = "http://ec2-15-164-102-179.ap-northeast-2.compute.amazonaws.com:8080", description = "테스트 서버"),
                 @Server(url = "http://localhost:8080", description = "로컬 서버")
         }
 )

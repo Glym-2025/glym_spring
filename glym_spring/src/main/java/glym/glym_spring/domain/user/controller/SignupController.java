@@ -4,12 +4,12 @@ import glym.glym_spring.domain.user.dto.SignupRequestDto;
 import glym.glym_spring.domain.user.dto.SignupResponseDto;
 import glym.glym_spring.domain.user.service.SignupService;
 import glym.glym_spring.global.docs.SignupControllerDocs;
+import glym.glym_spring.global.exception.CustomException;
+import glym.glym_spring.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,7 +26,21 @@ public class SignupController implements SignupControllerDocs {
 
         SignupResponseDto response = SignupResponseDto.builder()
                 .message("User Signup successful")
-                .username(requestDto.getUsername()).build();
+                .username(requestDto.getUsername())
+                .email(requestDto.getEmail())
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/signup/check-email")
+    public ResponseEntity<SignupResponseDto> checkEmailDuplicate(@RequestParam String email) {
+        signupService.checkEmail(email);
+        log.info("User: {}", email);
+
+        SignupResponseDto response = SignupResponseDto.builder()
+                .message("User email available")
+                .email(email).build();
 
         return ResponseEntity.ok(response);
     }

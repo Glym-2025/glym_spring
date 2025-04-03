@@ -11,4 +11,5 @@ import lombok.Getter;
 public class SignupResponseDto {
     private final String message;
     private final String username;
+    private final String email;
 }
