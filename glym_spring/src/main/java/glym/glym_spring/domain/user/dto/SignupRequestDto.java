@@ -9,12 +9,12 @@ import lombok.Getter;
 @AllArgsConstructor
 public class SignupRequestDto {
 
-    @NotBlank   //@NotNull 은 "" 빈문자열도 허용
+    @NotBlank(message = "이메일은 비어있을 수 없습니다")  //@NotNull 은 "" 빈문자열도 허용
     private final String email;
-    @NotBlank
+    @NotBlank(message = "비밀번호는 비어있을 수 없습니다")
     private final String password;
-    @NotBlank
+    @NotBlank(message = "이름은 비어있을 수 없습니다")
     private final String username;
-    @NotBlank
+    @NotBlank(message = "휴대폰은 비어있을 수 없습니다")
     private final String phone;
 }

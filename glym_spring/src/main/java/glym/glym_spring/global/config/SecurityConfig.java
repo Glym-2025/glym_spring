@@ -45,11 +45,20 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/login",
+                                "/signup",
                                 "/signup/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-resources/**",
-                                "/swagger-ui.html").permitAll()
+                                "/swagger-ui.html",
+                                "/swagger-custom.css",
+                                "/static/**",
+                                "/**/*.css",
+                                "/**/*.js",
+                                "/**/*.png",
+                                "/**/*.woff2",
+                                "/**/*.ttf"
+                        ).permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated());
 
@@ -57,6 +66,9 @@ public class SecurityConfig {
         http
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        http
+                .addFilterBefore(new CustomSkipFilter(), org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -66,7 +78,9 @@ public class SecurityConfig {
 
         configuration.setAllowedOriginPatterns(List.of(
                 "http://localhost:5173"
-                ,"http://localhost:3000")); // 허용할 오리진 TODO: CORS 경로 설정 "http://localhost:5173"
+                ,"http://localhost:3000",
+                "http://localhost:8080",
+                "http://ec2-15-164-102-179.ap-northeast-2.compute.amazonaws.com:8080")); // 허용할 오리진 TODO: CORS 경로 설정 "http://localhost:5173"
 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")); // 허용할 HTTP 메서드
         configuration.setAllowCredentials(true); // 인증 정보 포함 여부

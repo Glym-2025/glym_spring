@@ -1,5 +1,6 @@
 package glym.glym_spring.global.exception;
 
+import glym.glym_spring.global.dto.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,17 +12,20 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class SignupExceptionHandler {
 
     @ExceptionHandler(CustomException.class)
-    public ResponseEntity<ErrorResponse> handleCustomException(CustomException e){
+    public ResponseEntity<ApiResponse<EmailErrorResponse>> handleCustomException(CustomException e){
         log.error("CustomException 발생: {}", e.getMessage(), e);
 
         ErrorCode errorCode = e.getErrorCode();
 
-        ErrorResponse response = ErrorResponse.builder()
+        EmailErrorResponse response = EmailErrorResponse.builder()
+                .email(e.getEmail())
                 .errorCode(errorCode)
                 .errorMessage(errorCode.getMessage())
                 .build();
 
-        return ResponseEntity.status(errorCode.getStatus()).body(response);
+        return ResponseEntity
+                .status(errorCode.getStatus())
+                .body(ApiResponse.error(response, errorCode.getStatus().value(), errorCode.getMessage()));
     }
 
 }
