@@ -1,5 +1,6 @@
 package glym.glym_spring.domain.font.domain;
 
+import glym.glym_spring.domain.handwritingimage.domain.HandwritingImage;
 import glym.glym_spring.domain.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -1,6 +1,7 @@
 package glym.glym_spring.domain.font.controller;
 
 import glym.glym_spring.domain.font.service.FontService;
+import glym.glym_spring.domain.handwritingimage.service.HandWritingImageService;
 import glym.glym_spring.global.exception.domain.ImageValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class FontController {
 
     private final FontService fontService;
+    private final HandWritingImageService handWritingImageService;
 
     @GetMapping
     public String fontP() {
