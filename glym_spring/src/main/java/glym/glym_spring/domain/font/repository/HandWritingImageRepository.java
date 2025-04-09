@@ -1,9 +1,7 @@
-package glym.glym_spring.domain.handwritingimage.repository;
+package glym.glym_spring.domain.font.repository;
 
-import glym.glym_spring.domain.handwritingimage.domain.HandwritingImage;
-import jakarta.persistence.LockModeType;
+import glym.glym_spring.domain.font.domain.HandwritingImage;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

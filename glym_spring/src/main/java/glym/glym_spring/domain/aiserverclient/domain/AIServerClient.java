@@ -36,7 +36,7 @@ public class AIServerClient {
      * @param s3ImageKey S3에 저장된 이미지 키
      * @param fontName   생성할 폰트 이름
      * @param userId     사용자 ID
-     * @param jobId    이미지(작업) 식별자, 프론트에서 시작된 요청 ID로 사용
+     * @param jobId    작업 식별자, creation ID 사용
      * @return 요청이 정상적으로 AI 서버에 전송되었는지 여부
      */
     public boolean sendToAIServer(String s3ImageKey, String fontName, Long userId,Long jobId) {

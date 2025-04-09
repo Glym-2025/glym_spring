@@ -1,7 +1,5 @@
-package glym.glym_spring.domain.handwritingimage.domain;
+package glym.glym_spring.domain.font.domain;
 
-import glym.glym_spring.domain.font.domain.Font;
-import glym.glym_spring.domain.font.domain.JobStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,14 +25,11 @@ public class HandwritingImage {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "font_id", nullable = true)
-    private Font font;
+    private FontCreation fontCreation;
 
     @Column(name = "s3_image_key", nullable = false)
     private String s3ImageKey;
 
-    @Version
-    @Column(name = "version", nullable = false)
-    private Long version=0L;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)

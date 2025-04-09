@@ -1,6 +1,6 @@
 package glym.glym_spring.domain.user.domain;
 
-import glym.glym_spring.domain.font.domain.Font;
+import glym.glym_spring.domain.font.domain.FontCreation;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -56,7 +56,7 @@ public class User {
     private String role = "USER";    //USER, ADMIN
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Font> fonts = new ArrayList<>();
+    private List<FontCreation> fontCreations = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<RefreshToken> refreshTokens = new ArrayList<>();
