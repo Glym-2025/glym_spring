@@ -2,34 +2,47 @@ package glym.glym_spring.domain.font.domain;
 
 import glym.glym_spring.domain.user.domain.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+
 @Entity
-@Table(name = "fonts")
+@Table(name = "font_creations")
 @Getter @Setter
-public class Font {
-  
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class FontCreation {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "font_id")
+    @Column(name = "font_creation_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = true)
     private User user;
+
+//    @Column(name = "user_id", nullable = false)
+//    private Long userId;
 
     @Column(name = "font_name", nullable = false)
     private String fontName;
 
+    @Column(name = "description")
     private String description;
 
     @Column(name = "s3_font_key")
     private String s3FontKey;
+
+    @Column(name = "s3_image_key", nullable = false)
+    private String s3ImageKey;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private JobStatus status;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -37,8 +50,8 @@ public class Font {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name = "font_type")
-    private String fontType = "CUSTOM"; // CUSTOM, PREMIUM, FREE
+//    @Column(name = "font_type")
+//    private String fontType = "CUSTOM"; // CUSTOM, PREMIUM, FREE
 
     @Column(name = "download_count")
     private Integer downloadCount = 0;
@@ -46,8 +59,6 @@ public class Font {
     @Column(name = "is_public")
     private Boolean isPublic = false;
 
-    @OneToMany(mappedBy = "font", cascade = CascadeType.ALL)
-    private List<HandwritingImage> handwritingImages = new ArrayList<>();
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
@@ -71,12 +82,11 @@ public class Font {
     // 편의 메서드
     public void addTag(Tag tag) {
         this.tags.add(tag);
-        tag.getFonts().add(this);
+        tag.getFontCreations().add(this);
     }
 
     public void removeTag(Tag tag) {
         this.tags.remove(tag);
-        tag.getFonts().remove(this);
+        tag.getFontCreations().remove(this);
     }
 }
-

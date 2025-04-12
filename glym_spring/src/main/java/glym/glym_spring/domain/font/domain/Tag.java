@@ -1,6 +1,5 @@
 package glym.glym_spring.domain.font.domain;
 
-import glym.glym_spring.domain.font.domain.Font;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +25,7 @@ public class Tag {
     private LocalDateTime createdAt;
 
     @ManyToMany(mappedBy = "tags")
-    private Set<Font> fonts = new HashSet<>();
+    private Set<FontCreation> fontCreations = new HashSet<>();
 
     @PrePersist
     protected void onCreate() {

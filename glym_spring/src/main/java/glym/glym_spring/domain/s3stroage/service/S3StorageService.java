@@ -1,4 +1,4 @@
-package glym.glym_spring.domain.font.service;
+package glym.glym_spring.domain.s3stroage.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 
@@ -23,10 +23,10 @@ public class S3StorageService {
     @Value("${cloud.aws.s3.bucket-name}")
     private String bucketName;
 
-    public String storeImage(MultipartFile file, String uuid, String fontName) {
+    public String storeImage(MultipartFile file, String uuid, String fontName,Long userId) {
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
         String timestamp = String.valueOf(System.currentTimeMillis());
-        String key = String.format("%s_%s_original.%s", uuid, timestamp, extension);
+        String key = String.format("%s_%s.%s", uuid, fontName, extension);
 
         try {
             ObjectMetadata metadata = new ObjectMetadata();
