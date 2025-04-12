@@ -2,10 +2,7 @@ package glym.glym_spring.domain.font.service;
 
 import glym.glym_spring.domain.aiserverclient.domain.AIServerClient;
 import glym.glym_spring.domain.font.domain.FontCreation;
-import glym.glym_spring.domain.font.domain.FontProcessingJob;
 import glym.glym_spring.domain.font.repository.FontCreationRepository;
-import glym.glym_spring.domain.font.repository.FontProcessingJobRepository;
-import glym.glym_spring.domain.font.domain.HandwritingImage;
 import glym.glym_spring.domain.font.validator.HandWritingImageValidator;
 import glym.glym_spring.domain.s3stroage.service.S3StorageService;
 import glym.glym_spring.global.exception.domain.ImageValidationException;
@@ -17,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import static glym.glym_spring.domain.font.domain.FontProcessingJob.*;
+
 import static glym.glym_spring.domain.font.domain.JobStatus.PROCESSING;
 
 @Service
@@ -28,7 +25,6 @@ public class FontService {
     private final HandWritingImageValidator handWritingImageValidator;
     private final S3StorageService s3StorageService;
     private final AIServerClient aiServerClient;
-    private final FontProcessingJobRepository fontProcessingJobRepository;
 
     public String createFont(MultipartFile handWritingImage, String fontName) throws ImageValidationException {
 

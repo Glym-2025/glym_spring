@@ -61,6 +61,7 @@ public class AIServerClient {
             log.info("Sending request to AI server. jobId: {}, userId: {}, fontName: {}, callbackUrl: {}",
                     jobId, userId, fontName, callbackUrl);
 
+
             // RestClient를 사용한 POST 요청
             AIProcessingResponse response = restClient.post()
                     .uri(uri)
@@ -72,6 +73,8 @@ public class AIServerClient {
                     })
                     .toEntity(AIProcessingResponse.class)
                     .getBody();
+
+            System.out.println(response);
 
             // 응답이 null이 아니면 요청 성공, DB에 상태 저장
             if (response != null) {
