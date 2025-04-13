@@ -3,12 +3,19 @@ package glym.glym_spring.global.exception;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
     EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 사용 중인 이메일입니다"),
+    PHONENUMBER_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 사용 중인 휴대폰 번호입니다"),
+
+    INVALID_REQUEST(HttpStatus.NOT_FOUND, "유효하지 않은 요청입니다"),
+
+    //토큰 오류
+    INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 refresh token 입니다"),
+    REFRESH_TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "refresh token 이 존재하지 않습니다"),
+    REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "refresh token 이 만료되었습니다"),
 
     //이미지 파일 검증 오류
     FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "파일을 찾을 수 없습니다."),
@@ -28,11 +35,6 @@ public enum ErrorCode {
     UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,"알 수 없는 오류가 발생했습니다."),
 
     IO_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "파일 처리 중 오류가 발생했습니다.");
-
-
-
-
-
 
     private final HttpStatus status;
     private final String message;

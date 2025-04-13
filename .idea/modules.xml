@@ -2,6 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/gllim_spring.iml" filepath="$PROJECT_DIR$/.idea/modules/gllim_spring.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/glym_spring/gllim_spring.glym_spring.iml" filepath="$PROJECT_DIR$/.idea/modules/glym_spring/gllim_spring.glym_spring.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/gllim_spring.main.iml" filepath="$PROJECT_DIR$/.idea/modules/gllim_spring.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/gllim_spring.test.iml" filepath="$PROJECT_DIR$/.idea/modules/gllim_spring.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/glym_spring.iml" filepath="$PROJECT_DIR$/.idea/glym_spring.iml" />
     </modules>
   </component>
