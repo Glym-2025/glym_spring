@@ -12,3 +12,4 @@ public class SignupResponseDto {
     private final String username;
     private final String email;
 }
+

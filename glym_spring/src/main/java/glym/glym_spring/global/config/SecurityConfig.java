@@ -57,8 +57,10 @@ public class SecurityConfig {
                                 "/**/*.js",
                                 "/**/*.png",
                                 "/**/*.woff2",
-                                "/**/*.ttf"
-                        ).permitAll()
+                                "/**/*.ttf",
+                                "/font/**",
+                                "/api/callback").permitAll()
+
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated());
 
