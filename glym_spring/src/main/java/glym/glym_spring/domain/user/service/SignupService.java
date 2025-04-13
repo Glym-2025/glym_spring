@@ -2,7 +2,7 @@ package glym.glym_spring.domain.user.service;
 
 import glym.glym_spring.domain.user.dto.SignupRequestDto;
 import glym.glym_spring.domain.user.domain.User;
-import glym.glym_spring.global.exception.domain.CustomException;
+import glym.glym_spring.global.exception.CustomException;
 import glym.glym_spring.global.exception.ErrorCode;
 import glym.glym_spring.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,12 +18,12 @@ public class SignupService {
 
     public void signUp(SignupRequestDto signupRequestDto) throws CustomException {
 
-        /*if (userRepository.findByEmail(signupRequestDto.getEmail()).isPresent()) {
+        if (userRepository.findByEmail(signupRequestDto.getEmail()).isPresent()) {
             throw new CustomException(ErrorCode.EMAIL_ALREADY_EXISTS);
-        }*/
-        /*if(userRepository.findByPhone(signupRequestDto.getPhone()).isPresent()) {
+        }
+        if(userRepository.findByPhone(signupRequestDto.getPhone()).isPresent()) {
             throw new CustomException(ErrorCode.PHONENUMBER_ALREADY_EXISTS);
-        }*/
+        }
 
         User newUser = User.builder()
                 .username(signupRequestDto.getUsername())

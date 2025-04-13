@@ -1,12 +1,20 @@
 package glym.glym_spring.global.config;
 
+import glym.glym_spring.domain.user.service.RefreshTokenService;
+import glym.glym_spring.global.filter.JWTFilter;
+import glym.glym_spring.global.filter.LoginFilter;
+import glym.glym_spring.global.utils.JWTUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -17,7 +25,11 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final JWTUtil jwtUtil;
+    private final AuthenticationConfiguration authenticationConfiguration;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -25,28 +37,29 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, RefreshTokenService refreshTokenService) throws Exception {
+
+        LoginFilter loginFilter = new LoginFilter(
+                jwtUtil,
+                authenticationManager(authenticationConfiguration),
+                refreshTokenService);
+        loginFilter.setFilterProcessesUrl("/auth/login");
 
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()));
-        //csrf disable
-        http
-                .csrf((auth) -> auth.disable());
-
-        //Form 로그인 방식 disable
-        http
-                .formLogin((auth) -> auth.disable());
-
-        //http basic 인증 방식 disable
-        http
-                .httpBasic((auth) -> auth.disable());
-
-        //경로별 인가 작업
-        http
+                // cors 설정
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                // csrf disable
+                .csrf((auth) -> auth.disable())
+                //Form 로그인 방식 disable
+                .formLogin((auth) -> auth.disable())
+                //http basic 인증 방식 disable
+                .httpBasic((auth) -> auth.disable())
+                //경로별 인가 작업
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/login",
                                 "/signup",
                                 "/signup/**",
+                                "/auth/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-resources/**",
@@ -62,17 +75,27 @@ public class SecurityConfig {
                                 "/api/callback").permitAll()
 
                         .requestMatchers("/admin").hasRole("ADMIN")
-                        .anyRequest().authenticated());
-
-        //세션 설정
-        http
+                        .anyRequest().authenticated())
+                //세션 설정
                 .sessionManagement((session) -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class)
 
-        http
-                .addFilterBefore(new CustomSkipFilter(), org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
+    /**
+     * 인증 메니저 설정
+     */
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
+
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
