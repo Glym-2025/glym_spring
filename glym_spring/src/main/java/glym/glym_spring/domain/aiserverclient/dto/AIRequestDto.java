@@ -7,12 +7,12 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 @Builder
-public class AIProcessingRequest {
+public class AIRequestDto {
     private String s3ImageKey;
     private String fontName;
     private Long userId;
     private String callbackUrl;
-    private Long jobId;
+    private String  jobId;
 
     //create 타임,userId, 작업상태
 

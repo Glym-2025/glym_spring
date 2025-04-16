@@ -4,7 +4,7 @@ import com.amazonaws.services.s3.AmazonS3;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import glym.glym_spring.global.exception.ErrorCode;
+import glym.glym_spring.global.exception.errorcode.ErrorCode;
 import glym.glym_spring.global.exception.domain.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
@@ -19,24 +19,19 @@ import java.io.IOException;
 public class S3StorageService {
     private final AmazonS3 s3Client;
 
-
     @Value("${cloud.aws.s3.bucket-name}")
     private String bucketName;
 
-    public String storeImage(MultipartFile file, String uuid, String fontName,Long userId) {
+    public String storeImage(MultipartFile file, String uuid, Long userId) {
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
         String timestamp = String.valueOf(System.currentTimeMillis());
-        String key = String.format("%s_%s.%s", uuid, fontName, extension);
+        String key = String.format("%s.%s", uuid,  extension);
 
         try {
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentLength(file.getSize());
             metadata.setContentType(file.getContentType());
-
-            // 메타데이터 추가
-            metadata.addUserMetadata("fontName", fontName);
             metadata.addUserMetadata("uploadTime", timestamp);
-
             s3Client.putObject(new PutObjectRequest(
                     bucketName,
                     key,

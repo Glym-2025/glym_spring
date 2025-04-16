@@ -9,8 +9,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class AIProcessingResponse {
-    private Long jonId;
-    private String fontS3Path;
+public class AIResultDto {
+    private String  jobId;
+    private String s3FontPath;
     private String status;
 }

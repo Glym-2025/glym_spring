@@ -31,18 +31,14 @@ public class FontCreation {
     @Column(name = "font_name", nullable = false)
     private String fontName;
 
-    @Column(name = "description")
-    private String description;
+//    @Column(name = "description")
+//    private String description;
 
     @Column(name = "s3_font_key")
     private String s3FontKey;
 
     @Column(name = "s3_image_key", nullable = false)
     private String s3ImageKey;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private JobStatus status;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -53,20 +49,20 @@ public class FontCreation {
 //    @Column(name = "font_type")
 //    private String fontType = "CUSTOM"; // CUSTOM, PREMIUM, FREE
 
-    @Column(name = "download_count")
-    private Integer downloadCount = 0;
+//    @Column(name = "download_count")
+//    private Integer downloadCount = 0;
 
-    @Column(name = "is_public")
-    private Boolean isPublic = false;
+//    @Column(name = "is_public")
+//    private Boolean isPublic = false;
 
-
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-            name = "font_tags",
-            joinColumns = @JoinColumn(name = "font_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id")
-    )
-    private Set<Tag> tags = new HashSet<>();
+//
+//    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+//    @JoinTable(
+//            name = "font_tags",
+//            joinColumns = @JoinColumn(name = "font_id"),
+//            inverseJoinColumns = @JoinColumn(name = "tag_id")
+//    )
+//    private Set<Tag> tags = new HashSet<>();
 
     @PrePersist
     protected void onCreate() {
@@ -78,15 +74,15 @@ public class FontCreation {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
-
-    // 편의 메서드
-    public void addTag(Tag tag) {
-        this.tags.add(tag);
-        tag.getFontCreations().add(this);
-    }
-
-    public void removeTag(Tag tag) {
-        this.tags.remove(tag);
-        tag.getFontCreations().remove(this);
-    }
+//
+//    // 편의 메서드
+//    public void addTag(Tag tag) {
+//        this.tags.add(tag);
+//        tag.getFontCreations().add(this);
+//    }
+//
+//    public void removeTag(Tag tag) {
+//        this.tags.remove(tag);
+//        tag.getFontCreations().remove(this);
+//    }
 }

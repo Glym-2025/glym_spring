@@ -3,7 +3,7 @@ package glym.glym_spring.domain.font.validator;
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.exif.ExifIFD0Directory;
-import glym.glym_spring.global.exception.ErrorCode;
+import glym.glym_spring.global.exception.errorcode.ErrorCode;
 import glym.glym_spring.global.exception.domain.ImageValidationException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -62,6 +62,7 @@ public class HandWritingImageValidator {
         if (!ALLOWED_EXTENSIONS.contains(extension.toLowerCase())) {
             throw new ImageValidationException(ErrorCode.INVALID_FILE_FORMAT);
         }
+
     }
 
     /**
