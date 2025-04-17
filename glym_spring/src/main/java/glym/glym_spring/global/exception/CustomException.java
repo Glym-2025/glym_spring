@@ -1,5 +1,6 @@
 package glym.glym_spring.global.exception;
 
+import glym.glym_spring.global.exception.errorcode.ErrorCode;
 import lombok.Getter;
 
 @Getter

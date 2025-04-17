@@ -5,7 +5,8 @@ import glym.glym_spring.domain.user.domain.User;
 import glym.glym_spring.domain.user.repository.RefreshTokenRepository;
 import glym.glym_spring.global.dto.ApiResponse;
 import glym.glym_spring.global.exception.CustomException;
-import glym.glym_spring.global.exception.ErrorCode;
+
+import glym.glym_spring.global.exception.errorcode.ErrorCode;
 import glym.glym_spring.global.utils.JWTUtil;
 import glym.glym_spring.login.dto.CustomUserDetails;
 import lombok.RequiredArgsConstructor;

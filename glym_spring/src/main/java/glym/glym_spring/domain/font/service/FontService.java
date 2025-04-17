@@ -1,8 +1,11 @@
 package glym.glym_spring.domain.font.service;
 
 import glym.glym_spring.domain.aiserverclient.domain.AIServerClient;
-import glym.glym_spring.domain.font.domain.FontCreation;
+import glym.glym_spring.domain.font.domain.FontProcessingJob;
+import glym.glym_spring.domain.font.dto.FontCreateRequest;
 import glym.glym_spring.domain.font.repository.FontCreationRepository;
+import glym.glym_spring.domain.font.repository.FontProcessingJobRepository;
+import glym.glym_spring.domain.font.utils.ImageConverter;
 import glym.glym_spring.domain.font.validator.HandWritingImageValidator;
 import glym.glym_spring.domain.s3stroage.service.S3StorageService;
 import glym.glym_spring.global.exception.domain.ImageValidationException;
@@ -11,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
+import java.io.IOException;
 import java.util.UUID;
 
 
@@ -25,8 +28,9 @@ public class FontService {
     private final HandWritingImageValidator handWritingImageValidator;
     private final S3StorageService s3StorageService;
     private final AIServerClient aiServerClient;
+    private final FontProcessingJobRepository fontProcessingJobRepository;
 
-    public String createFont(MultipartFile handWritingImage, String fontName) throws ImageValidationException {
+    public String createFont(FontCreateRequest request) throws IOException, ImageValidationException {
 
 
         Long userId=1L;
@@ -37,36 +41,37 @@ public class FontService {
 
         String uuid = UUID.randomUUID().toString();
 
-        FontCreation fontCreation = processingImage(handWritingImage, fontName, userId,uuid);
 
-        aiServerClient.sendToAIServer(
-                fontCreation.getS3ImageKey(),
-                fontName,
-                userId,
-                fontCreation.getId());
+        MultipartFile handWritingImage = request.getHandWritingImage();
+        String fontName = request.getFontName();
+
+
+        String s3Key = processingImage(handWritingImage,userId,uuid);
+
+
+        FontProcessingJob job = FontProcessingJob.builder()
+                .status(PROCESSING)
+                .userId(userId)
+                .fontName(fontName)
+                .s3ImageKey(s3Key)
+                .jobId(uuid)
+                .build();
+
+        fontProcessingJobRepository.save(job);
+
+        aiServerClient.sendToAIServer(job);
 
         // 작업요청 을 생성 유저 아이디, s3key (이미지경로), 작업아이디, 스테이터스, 생성시간
         return uuid;
     }
 
-
-
-
-    public FontCreation processingImage (MultipartFile handWritingImage, String fontName, Long userId, String uuid) throws ImageValidationException {
+    public String processingImage (MultipartFile handWritingImage,  Long userId, String uuid) throws IOException, ImageValidationException {
         //handWritingImageValidator.validate(handWritingImage);
 
-        String s3Key = s3StorageService.storeImage(handWritingImage, uuid, fontName,userId);
+        ImageConverter.convertToPng(handWritingImage);
 
-        FontCreation image = FontCreation.builder()
-                //.userId(userId)
-                .fontName(fontName)
-                .s3ImageKey(s3Key)
-                .createdAt(LocalDateTime.now())
-                .status(PROCESSING)
-                .createdAt(LocalDateTime.now())
-                .build();
+        return s3StorageService.storeImage(handWritingImage, uuid,userId);
 
-        return fontCreationRepository.save(image);
     }
 
 

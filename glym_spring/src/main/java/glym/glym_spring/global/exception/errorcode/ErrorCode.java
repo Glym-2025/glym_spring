@@ -1,4 +1,4 @@
-package glym.glym_spring.global.exception;
+package glym.glym_spring.global.exception.errorcode;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

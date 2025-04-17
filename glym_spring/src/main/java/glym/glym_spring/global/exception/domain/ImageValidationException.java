@@ -1,5 +1,5 @@
 package glym.glym_spring.global.exception.domain;
-import glym.glym_spring.global.exception.ErrorCode;
+import glym.glym_spring.global.exception.errorcode.ErrorCode;
 
 public class ImageValidationException extends Exception {
     private final ErrorCode error;

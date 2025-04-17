@@ -1,11 +1,7 @@
 package glym.glym_spring.login.controller;
 
-import glym.glym_spring.domain.user.domain.RefreshToken;
-import glym.glym_spring.domain.user.repository.RefreshTokenRepository;
 import glym.glym_spring.domain.user.service.RefreshTokenService;
 import glym.glym_spring.global.dto.ApiResponse;
-import glym.glym_spring.global.exception.CustomException;
-import glym.glym_spring.global.exception.ErrorCode;
 import glym.glym_spring.global.utils.JWTUtil;
 import glym.glym_spring.login.docs.AuthDocs;
 import glym.glym_spring.login.dto.LoginRequest;
