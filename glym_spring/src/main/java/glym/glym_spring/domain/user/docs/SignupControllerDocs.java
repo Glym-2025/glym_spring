@@ -1,4 +1,4 @@
-package glym.glym_spring.global.docs;
+package glym.glym_spring.domain.user.docs;
 
 import glym.glym_spring.global.dto.ApiResponse;
 import glym.glym_spring.domain.user.dto.SignupRequestDto;

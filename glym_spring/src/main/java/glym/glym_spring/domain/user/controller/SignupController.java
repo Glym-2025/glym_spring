@@ -4,7 +4,7 @@ import glym.glym_spring.global.dto.ApiResponse;
 import glym.glym_spring.domain.user.dto.SignupRequestDto;
 import glym.glym_spring.domain.user.dto.SignupResponseDto;
 import glym.glym_spring.domain.user.service.SignupService;
-import glym.glym_spring.global.docs.SignupControllerDocs;
+import glym.glym_spring.domain.user.docs.SignupControllerDocs;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
