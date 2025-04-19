@@ -1,5 +1,6 @@
-package glym.glym_spring.domain.user.domain;
+package glym.glym_spring.auth.domain;
 
+import glym.glym_spring.domain.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,6 +1,6 @@
 package glym.glym_spring.global.config;
 
-import glym.glym_spring.domain.user.service.RefreshTokenService;
+import glym.glym_spring.auth.service.RefreshTokenService;
 import glym.glym_spring.global.filter.JWTFilter;
 import glym.glym_spring.global.filter.LoginFilter;
 import glym.glym_spring.global.utils.JWTUtil;
@@ -59,18 +59,14 @@ public class SecurityConfig {
                         .requestMatchers("/login",
                                 "/signup",
                                 "/signup/**",
-                                "/auth/**",
+                                "/auth/login",
+                                "/auth/refresh",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-resources/**",
                                 "/swagger-ui.html",
                                 "/swagger-custom.css",
                                 "/static/**",
-                                "/**/*.css",
-                                "/**/*.js",
-                                "/**/*.png",
-                                "/**/*.woff2",
-                                "/**/*.ttf",
                                 "/font/**",
                                 "/api/callback").permitAll()
 
@@ -110,6 +106,7 @@ public class SecurityConfig {
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")); // 허용할 HTTP 메서드
         configuration.setAllowCredentials(true); // 인증 정보 포함 여부
         configuration.setAllowedHeaders(Collections.singletonList("*")); // 허용할 헤더
+        configuration.setExposedHeaders(Collections.singletonList("*"));
         configuration.setMaxAge(3600L); // Preflight 캐싱 시간
 
         // 모든 경로에 대해 CORS 설정 적용

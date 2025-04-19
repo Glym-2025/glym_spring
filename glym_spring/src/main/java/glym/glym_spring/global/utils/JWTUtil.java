@@ -1,7 +1,7 @@
 package glym.glym_spring.global.utils;
 
-import glym.glym_spring.login.dto.CustomUserDetails;
-import glym.glym_spring.login.service.CustomUserDetailsService;
+import glym.glym_spring.auth.dto.CustomUserDetails;
+import glym.glym_spring.auth.service.CustomUserDetailsService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Component
@@ -205,6 +206,14 @@ public class JWTUtil {
      */
     public LocalDateTime getRefreshExpiryDate() {
         return LocalDateTime.now().plusSeconds(refreshTokenExpTime / 1000);
+    }
+
+    public LocalDateTime getRefreshExpiryDate(String refreshToken) {
+        Claims claims = getClaims(refreshToken);
+        Date expirationDate = claims.getExpiration();
+        return expirationDate.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
     }
 
     /**

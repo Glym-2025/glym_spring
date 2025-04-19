@@ -1,8 +1,8 @@
-package glym.glym_spring.login.service;
+package glym.glym_spring.auth.service;
 
 import glym.glym_spring.domain.user.domain.User;
 import glym.glym_spring.domain.user.repository.UserRepository;
-import glym.glym_spring.login.dto.CustomUserDetails;
+import glym.glym_spring.auth.dto.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,7 +22,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email));
 
         if (user != null) {
-
             // UserDetails에 담아서 return 하면 AuthenticationManager가 검증함
             return new CustomUserDetails(user);
         }

@@ -1,15 +1,15 @@
 package glym.glym_spring.global.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import glym.glym_spring.domain.user.service.RefreshTokenService;
+import glym.glym_spring.auth.service.RefreshTokenService;
 import glym.glym_spring.global.dto.ApiResponse;
 import glym.glym_spring.global.exception.errorcode.ErrorCode;
 import glym.glym_spring.global.utils.JWTUtil;
-import glym.glym_spring.login.dto.CustomUserDetails;
-import glym.glym_spring.login.dto.LoginRequest;
+import glym.glym_spring.auth.dto.CustomUserDetails;
+import glym.glym_spring.auth.dto.LoginRequest;
 import glym.glym_spring.global.exception.CustomException;
 
-import glym.glym_spring.login.dto.LoginResponse;
+import glym.glym_spring.auth.dto.LoginResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

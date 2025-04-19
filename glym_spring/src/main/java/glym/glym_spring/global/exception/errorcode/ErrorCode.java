@@ -16,6 +16,7 @@ public enum ErrorCode {
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 refresh token 입니다"),
     REFRESH_TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "refresh token 이 존재하지 않습니다"),
     REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "refresh token 이 만료되었습니다"),
+    REFRESH_TOKEN_MISMATCH(HttpStatus.FORBIDDEN, "본인의 refresh token 이 아닙니다"),
 
     //이미지 파일 검증 오류
     FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "파일을 찾을 수 없습니다."),
