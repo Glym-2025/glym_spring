@@ -1,4 +1,4 @@
-package glym.glym_spring.login.dto;
+package glym.glym_spring.auth.dto;
 
 import lombok.Getter;
 

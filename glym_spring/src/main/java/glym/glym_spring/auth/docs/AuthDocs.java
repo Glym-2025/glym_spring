@@ -1,9 +1,9 @@
-package glym.glym_spring.login.docs;
+package glym.glym_spring.auth.docs;
 
-import glym.glym_spring.domain.user.dto.SignupRequestDto;
+import glym.glym_spring.auth.dto.CustomUserDetails;
 import glym.glym_spring.global.dto.ApiResponse;
-import glym.glym_spring.login.dto.LoginRequest;
-import glym.glym_spring.login.dto.LoginResponse;
+import glym.glym_spring.auth.dto.LoginRequest;
+import glym.glym_spring.auth.dto.LoginResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 
@@ -68,19 +68,76 @@ public interface AuthDocs {
             summary = "refresh token 으로 access token 새로 발급받기",
             description = """
                 ## refresh token 이 만료되면, 해당 refresh token 으로 새로 발급받습니다
+               
+                ## ⚠️ Swagger 사용 시 주의사항
+                - **Swagger UI는 브라우저 보안 제한으로 Cookie 기반 인증 테스트가 정상적으로 동작하지 않습니다.**
+                - 따라서 **Postman 또는 실제 클라이언트 환경에서 테스트해 주세요.**
 
                 ### 📥 요청 형식
                 - 요청 시 별도의 Body 는 필요하지 않습니다.
-                - **Refresh Token** 은 쿠키로 전송됩니다.
+                - **Refresh Token** 은 쿠키로 전송합니다.
 
                 ### 📤 응답
                 - 200 OK: 토큰 재발급 성공
                 - Access Token 은 헤더에 저장됨
+                - Refresh Token 탈취 예방을 위해 새로운 Refresh Token 도 쿠키로 발급됨
                 ```json
                 {
                   "message": "AccessToken Refresh Success",
                   "status": 200,
                   "data": null
+                }
+                ```
+
+                - 401 Unauthorized: 유효하지 않은 refresh token 일 경우 에러 메시지 출력
+                ```json
+                {
+                  "message": "Invalid Refresh Token",
+                  "status": 401,
+                  "data": {
+                    "errorCode": "INVALID_REFRESH_TOKEN",
+                    "errorMessage": "유효하지 않은 refresh token 입니다"
+                  }
+                }
+                ```
+                
+                - 401 Unauthorized: 존재하지 않는 refresh token 일 경우 에러 메시지 출력
+                ```json
+                {
+                  "message": "Invalid Refresh Token",
+                  "status": 401,
+                  "data": {
+                    "errorCode": "REFRESH_TOKEN_NOT_FOUND",
+                    "errorMessage": "refresh token 이 존재하지 않습니다"
+                  }
+                }
+                ```
+                """
+    )
+    ResponseEntity<ApiResponse<String>> refresh(String refreshToken);
+
+    @Operation(
+            summary = "로그아웃",
+            description = """
+                ## 사용자가 access token 과 refresh token 으로 로그아웃을 진행합니다
+                
+                ## ⚠️ Swagger 사용 시 주의사항
+                - **Swagger UI는 브라우저 보안 제한으로 Cookie 기반 인증 테스트가 정상적으로 동작하지 않습니다.**
+                - 따라서 **Postman 또는 실제 클라이언트 환경에서 테스트해 주세요.**
+
+                ### 📥 요청 형식
+                - 요청 시 별도의 Body 는 필요하지 않습니다.
+                - **Access Token** 은 헤더로 전송합니다.
+                - **Refresh Token** 은 쿠키로 전송합니다.
+
+                ### 📤 응답
+                - 200 OK: 로그아웃 성공
+                - Refresh Token 이 DB 에서 삭제됨
+                ```json
+                {
+                  "message": "Logout Success",
+                  "status": 200,
+                  "data": "로그아웃 한 사용자 이름"
                 }
                 ```
 
@@ -103,13 +160,35 @@ public interface AuthDocs {
                   "message": "Invalid Refresh Token",
                   "status": 401,
                   "data": {
-                    "email": null,
                     "errorCode": "REFRESH_TOKEN_NOT_FOUND",
                     "errorMessage": "refresh token 이 존재하지 않습니다"
                   }
                 }
                 ```
+                
+                - 401 Unauthorized: 만료된 refresh token 일 경우 에러 메시지 출력
+                ```json
+                {
+                  "message": "Invalid Refresh Token",
+                  "status": 401,
+                  "data": {
+                    "errorCode": "REFRESH_TOKEN_EXPIRED",
+                    "errorMessage": "refresh token 이 만료되었습니다"
+                  }
+                }
+                ```
+                
+                - 401 Unauthorized: 사용자 본인의 refresh token 이 아닐 경우 에러 메시지 출력
+                ```json
+                {
+                  "message": "Invalid Refresh Token",
+                  "status": 401,
+                  "data": {
+                    "errorCode": "REFRESH_TOKEN_MISMATCH",
+                    "errorMessage": "본인의 refresh token 이 아닙니다"
+                  }
+                }
                 """
     )
-    ResponseEntity<ApiResponse<String>> refresh(String refreshToken);
+    ResponseEntity<ApiResponse<String>> logout(CustomUserDetails customUserDetails, String refreshToken);
 }

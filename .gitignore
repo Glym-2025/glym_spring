@@ -1,3 +1,4 @@
 /.idea/
 /glym_spring/src/main/resources/application.yml
+/glym_spring/src/main/resources/application-dev.yml
 *.yml

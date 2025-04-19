@@ -3,7 +3,7 @@ package glym.glym_spring.global.filter;
 import glym.glym_spring.domain.user.domain.User;
 import glym.glym_spring.global.config.SecurityUrls;
 import glym.glym_spring.global.utils.JWTUtil;
-import glym.glym_spring.login.dto.CustomUserDetails;
+import glym.glym_spring.auth.dto.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -60,10 +60,13 @@ public class JWTFilter extends OncePerRequestFilter {
 
         // 토큰에서 username 획득
         String username = jwtUtil.getUsername(token);
+        //토큰에서 userId 획득
+        Long userId = Long.valueOf(jwtUtil.getClaims(token).getSubject());
 
         //user를 생성하여 값 set
         User user = User.builder()
                 .username(username)
+                .id(userId)
                 .build();
 
         //UserDetails에 회원 정보 객체 담기
