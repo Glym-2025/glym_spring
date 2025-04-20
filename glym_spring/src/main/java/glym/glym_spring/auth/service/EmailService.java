@@ -1,7 +1,7 @@
 package glym.glym_spring.auth.service;
 
+;
 import glym.glym_spring.global.exception.EmailSendException;
-import glym.glym_spring.global.exception.EmailSendExceptionHandler;
 import glym.glym_spring.global.exception.errorcode.ErrorCode;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -9,8 +9,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -26,6 +27,7 @@ import java.util.UUID;
 public class EmailService {
 
     private final JavaMailSender mailSender;
+    private final RedisTemplate authCodeRedisTemplate;
 
     @Value("${custom.mail.from}")
     private String fromAddress;
@@ -35,7 +37,7 @@ public class EmailService {
 
     public void sendEmail(String to) throws MessagingException {
 
-        String code = generateAuthCode();
+        String code = generateAuthCode(to);
         String content = loadEmailTemplate(code);
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -53,8 +55,10 @@ public class EmailService {
 
     }
 
-    private String generateAuthCode() {
-        return UUID.randomUUID().toString().substring(0, 6);
+    private String generateAuthCode(String email) {
+        String code = UUID.randomUUID().toString().substring(0, 6);
+        authCodeRedisTemplate.opsForValue().set("authCode:"+email, code, 5, TimeUnit.MINUTES);
+        return code;
     }
 
     private String loadEmailTemplate(String code) {

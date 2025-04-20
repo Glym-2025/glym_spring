@@ -40,6 +40,8 @@ dependencies {
 
 	//메일 인증 관련
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	//redis 관련
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'mysql:mysql-connector-java'
