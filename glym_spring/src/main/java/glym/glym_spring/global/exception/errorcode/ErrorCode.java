@@ -12,6 +12,9 @@ public enum ErrorCode {
 
     INVALID_REQUEST(HttpStatus.NOT_FOUND, "유효하지 않은 요청입니다"),
 
+    //이메일 전송 오류
+    EMAIL_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "이메일 전송해 실패했습니다"),
+
     //토큰 오류
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 refresh token 입니다"),
     REFRESH_TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "refresh token 이 존재하지 않습니다"),

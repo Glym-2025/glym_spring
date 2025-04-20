@@ -35,6 +35,7 @@ public class GlobalExceptionHandler {
     }
 
 
+    //@NotBlank 관련 예외처리
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<List<String>>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         List<String> errorMessage = ex.getBindingResult()
