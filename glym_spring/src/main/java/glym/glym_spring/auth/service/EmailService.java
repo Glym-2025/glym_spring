@@ -1,12 +1,10 @@
 package glym.glym_spring.auth.service;
 
 ;
-import glym.glym_spring.global.exception.EmailSendException;
-import glym.glym_spring.global.exception.EmailVerificationException;
-import glym.glym_spring.global.exception.errorcode.ErrorCode;
+import glym.glym_spring.global.exception.CustomExceptionRefactor;
+import glym.glym_spring.global.exception.errorcode.ErrorCodeRefactor;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,7 +50,7 @@ public class EmailService {
         try{
             mailSender.send(mimeMessage);
         } catch (MailException e) {
-           throw new EmailSendException(ErrorCode.EMAIL_SEND_FAILED, to);
+           throw new CustomExceptionRefactor(ErrorCodeRefactor.EMAIL_SEND_FAILED, to);
         }
     }
 
@@ -60,12 +58,12 @@ public class EmailService {
         String key = "authCode:" + email;
 
         if(!authCodeRedisTemplate.hasKey(key)) {
-            throw new EmailVerificationException(ErrorCode.EMAIL_CODE_NOT_FOUND, email);
+            throw new CustomExceptionRefactor(ErrorCodeRefactor.EMAIL_CODE_NOT_FOUND, email);
         }
         String storedCode = authCodeRedisTemplate.opsForValue().get(key).toString();
 
         if(!storedCode.equals(code)) {
-            throw new EmailVerificationException(ErrorCode.EMAIL_CODE_MISMATCH, email);
+            throw new CustomExceptionRefactor(ErrorCodeRefactor.EMAIL_CODE_MISMATCH, email);
         }
 
         authCodeRedisTemplate.delete(key);

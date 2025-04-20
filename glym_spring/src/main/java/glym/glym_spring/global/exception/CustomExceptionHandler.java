@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 @Slf4j
-public class EmailSendExceptionHandler {
-    @ExceptionHandler(EmailSendException.class)
-    public ResponseEntity<ApiResponse<EmailErrorResponse>> handleCustomException(EmailSendException e) {
+public class CustomExceptionHandler {
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<ApiResponse<EmailErrorResponse>> handleCustomException(CustomException e){
         log.error("CustomException 발생: {}", e.getMessage(), e);
 
         ErrorCode errorCode = e.getErrorCode();
@@ -24,6 +24,6 @@ public class EmailSendExceptionHandler {
 
         return ResponseEntity
                 .status(errorCode.getStatus())
-                .body(ApiResponse.error(response, errorCode.getStatus().value(), "Email Send Failed"));
+                .body(ApiResponse.error(response, errorCode.getStatus().value(), errorCode.getMessage()));
     }
 }
