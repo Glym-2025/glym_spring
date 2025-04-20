@@ -9,6 +9,7 @@ import glym.glym_spring.global.utils.JWTUtil;
 import glym.glym_spring.auth.docs.AuthDocs;
 import glym.glym_spring.auth.dto.LoginRequest;
 import glym.glym_spring.auth.dto.LoginResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -42,7 +43,7 @@ public class AuthController implements AuthDocs {
     }
 
     @PostMapping("/send-email")
-    public ResponseEntity<ApiResponse<String>> sendEmail(@RequestBody EmailRequest emailRequest) throws Exception {
+    public ResponseEntity<ApiResponse<String>> sendEmail(@RequestBody @Valid EmailRequest emailRequest) throws Exception {
         emailService.sendEmail(emailRequest.getTo());
         return ResponseEntity.ok(ApiResponse.success(emailRequest.getTo(), "Email Send Success"));
     }
