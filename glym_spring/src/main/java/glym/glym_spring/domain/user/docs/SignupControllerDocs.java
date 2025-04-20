@@ -81,7 +81,7 @@ public interface SignupControllerDocs {
         - 409 : 이미 존재하는 이메일인 경우<br></br>
         ```json
         {
-          "message": "이미 사용 중인 이메일입니다",
+          "message": "Email Already Exists",
           "status": 409,
           "data": {
             "email": "glym2025@gmail.com",

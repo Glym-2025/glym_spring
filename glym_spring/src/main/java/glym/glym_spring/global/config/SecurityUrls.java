@@ -12,6 +12,7 @@ public class SecurityUrls {
             "/auth/login", // 로그인
             "/auth/refresh",
             "/auth/send-email",
+            "/auth/verify-email",
             "/signup/**", // 회원가입
 
             // Swagger

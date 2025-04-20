@@ -1,10 +1,7 @@
 package glym.glym_spring.auth.docs;
 
-import glym.glym_spring.auth.dto.CustomUserDetails;
-import glym.glym_spring.auth.dto.EmailRequest;
+import glym.glym_spring.auth.dto.*;
 import glym.glym_spring.global.dto.ApiResponse;
-import glym.glym_spring.auth.dto.LoginRequest;
-import glym.glym_spring.auth.dto.LoginResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 
@@ -252,4 +249,71 @@ public interface AuthDocs {
                 """
     )
     ResponseEntity<ApiResponse<String>> sendEmail(EmailRequest emailRequest) throws Exception;
+
+    @Operation(
+            summary = "이메일 인증코드 검증",
+            description = """
+                ## 사용자가 인증 코드로 이메일에 대한 검증을 요청합니다
+
+                ### 📥 요청 형식
+                - JSON Body:
+                ```json
+                {
+                  "email": "example@example.com",
+                  "code": "여섯자리 코드"
+                }
+                ```
+
+                ### 📤 응답
+                - 200 OK: 이메일 인증 성공
+                ```json
+                {
+                  "message": "Email Verification Success",
+                  "status": 200,
+                  "data": "example@example.com"
+                }
+                ```
+                
+                - 403 Forbidden: 인증 코드 불일치시 에러 메시지 반환
+                ```json
+                {
+                  "message": "Email Verification Failed",
+                  "status": 403,
+                  "data": {
+                    "email": "example@example.com",
+                    "errorCode": "EMAIL_CODE_MISMATCH",
+                    "errorMessage": "인증코드가 일치하지 않습니다"
+                   }
+                }
+                ```                
+                
+                - 404 Not Found: 해당 이메일에 대한 인증코드가 존재하지 않는 경우
+                ```json
+                {
+                  "message": "Email Verification Failed",
+                  "status": 404,
+                  "data": {
+                    "email": "example@example.com",
+                    "errorCode": "EMAIL_CODE_NOT_FOUND",
+                    "errorMessage": "해당 이메일에 대한 인증코드가 존재하지 않습니다"
+                  }
+                }
+                ```
+                
+                - 400 Bad Request: 형식 오류 또는 누락 시 에러 메시지 반환
+                ```json
+                {
+                  "message": "Validation Failed",
+                  "status": 400,
+                  "data": [
+                    "이메일은 비어있을 수 없습니다",
+                    "인증 코드는 비어있을 수 없습니다",
+                    "유효하지 않은 이메일 형식입니다"
+                  ]
+                }
+                ```
+               
+                """
+    )
+    ResponseEntity<ApiResponse<String>> verifyEmail(EmailVerificationRequest emailVerificationRequest);
 }
