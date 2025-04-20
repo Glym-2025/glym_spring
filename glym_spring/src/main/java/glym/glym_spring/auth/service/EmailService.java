@@ -8,12 +8,15 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @Service
@@ -33,7 +36,7 @@ public class EmailService {
     public void sendEmail(String to) throws MessagingException {
 
         String code = generateAuthCode();
-        String content = buildContent(code);
+        String content = loadEmailTemplate(code);
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
@@ -54,8 +57,17 @@ public class EmailService {
         return UUID.randomUUID().toString().substring(0, 6);
     }
 
-    private String buildContent(String code) {
-        return String.format("<h1>인증코드: <strong>%s</strong></h1>", code);
+    private String loadEmailTemplate(String code) {
+        try {
+            ClassPathResource resource = new ClassPathResource("templates/email.html");
+            String template = new String(resource.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+
+            return template
+                    .replace("{{code}}", code);
+
+        } catch (IOException e) {
+            throw new RuntimeException("이메일 템플릿 로딩 실패", e);
+        }
     }
 
 
