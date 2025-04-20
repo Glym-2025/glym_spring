@@ -1,6 +1,7 @@
 package glym.glym_spring.auth.docs;
 
 import glym.glym_spring.auth.dto.CustomUserDetails;
+import glym.glym_spring.auth.dto.EmailRequest;
 import glym.glym_spring.global.dto.ApiResponse;
 import glym.glym_spring.auth.dto.LoginRequest;
 import glym.glym_spring.auth.dto.LoginResponse;
@@ -191,4 +192,64 @@ public interface AuthDocs {
                 """
     )
     ResponseEntity<ApiResponse<String>> logout(CustomUserDetails customUserDetails, String refreshToken);
+
+    @Operation(
+            summary = "이메일 인증코드 요청",
+            description = """
+                ## 사용자가 이메일을 입력한 후 인증 코드를 요청합니다
+
+                ### 📥 요청 형식
+                - JSON Body:
+                ```json
+                {
+                  "email": "example@example.com",
+                }
+                ```
+
+                ### 📤 응답
+                - 200 OK: 인증코드 이메일로 발송 성공
+                ```json
+                {
+                  "message": "Email Send Success",
+                  "status": 200,
+                  "data": "사용자가 입력한 이메일"
+                }
+                ```
+                
+                - 400 Bad Request: 형식 오류 또는 누락 시 에러 메시지 반환
+                ```json
+                {
+                  "message": "Validation Failed",
+                  "status": 400,
+                  "data": [
+                    "유효하지 않은 이메일 형식입니다"
+                  ]
+                }
+                ```
+                ```json
+                {
+                  "message": "Validation Failed",
+                  "status": 400,
+                  "data": [
+                    "이메일은 비어있을 수 없습니다"
+                  ]
+                }
+                ```
+                
+                 - 500 Internal Server Error: 서버 문제로 이메일 전송에 실패했을 경우
+                ```json
+                {
+                  "message": "Email Send Failed",
+                  "status": 500,
+                  "data": {
+                    "email": "사용자가 입력한 이메일",
+                    "errorCode": "EMAIL_SEND_FAILED",
+                    "errorMessage": "이메일 전송에 실패했습니다"
+                  }
+                }
+                ```
+               
+                """
+    )
+    ResponseEntity<ApiResponse<String>> sendEmail(EmailRequest emailRequest) throws Exception;
 }
