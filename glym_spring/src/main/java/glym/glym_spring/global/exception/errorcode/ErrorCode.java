@@ -15,6 +15,10 @@ public enum ErrorCode {
     //이메일 전송 오류
     EMAIL_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "이메일 전송에 실패했습니다"),
 
+    //인증코드 오류
+    EMAIL_CODE_MISMATCH(HttpStatus.FORBIDDEN, "인증코드가 일치하지 않습니다"),
+    EMAIL_CODE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 이메일에 대한 인증코드가 존재하지 않습니다"),
+
     //토큰 오류
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "유효하지 않은 refresh token 입니다"),
     REFRESH_TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "refresh token 이 존재하지 않습니다"),

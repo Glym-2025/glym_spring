@@ -2,9 +2,11 @@ package glym.glym_spring.auth.service;
 
 ;
 import glym.glym_spring.global.exception.EmailSendException;
+import glym.glym_spring.global.exception.EmailVerificationException;
 import glym.glym_spring.global.exception.errorcode.ErrorCode;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,12 +54,30 @@ public class EmailService {
         } catch (MailException e) {
            throw new EmailSendException(ErrorCode.EMAIL_SEND_FAILED, to);
         }
+    }
 
+    public void verifyEmail(String email, String code) {
+        String key = "authCode:" + email;
+
+        if(!authCodeRedisTemplate.hasKey(key)) {
+            throw new EmailVerificationException(ErrorCode.EMAIL_CODE_NOT_FOUND, email);
+        }
+        String storedCode = authCodeRedisTemplate.opsForValue().get(key).toString();
+
+        if(!storedCode.equals(code)) {
+            throw new EmailVerificationException(ErrorCode.EMAIL_CODE_MISMATCH, email);
+        }
+
+        authCodeRedisTemplate.delete(key);
     }
 
     private String generateAuthCode(String email) {
         String code = UUID.randomUUID().toString().substring(0, 6);
-        authCodeRedisTemplate.opsForValue().set("authCode:"+email, code, 5, TimeUnit.MINUTES);
+        /*
+        if(authCodeRedisTemplate.hasKey("authCode" + email)){   //사실 redis 는 덮어쓰기 때문에 있을 필요가 없음
+            authCodeRedisTemplate.delete("authCode" + email);
+        }*/
+        authCodeRedisTemplate.opsForValue().set("authCode:" + email, code, 5, TimeUnit.MINUTES);
         return code;
     }
 
