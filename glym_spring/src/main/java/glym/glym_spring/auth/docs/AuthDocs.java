@@ -199,7 +199,7 @@ public interface AuthDocs {
                 - JSON Body:
                 ```json
                 {
-                  "email": "example@example.com",
+                  "to": "example@example.com",
                 }
                 ```
 
