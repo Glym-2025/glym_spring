@@ -99,16 +99,17 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOriginPatterns(List.of(
+        configuration.setAllowedOrigins(List.of(
                 "http://localhost:5173"
                 ,"http://localhost:3000",
                 "http://localhost:8080",
-                "http://ec2-15-164-102-179.ap-northeast-2.compute.amazonaws.com:8080")); // 허용할 오리진 TODO: CORS 경로 설정 "http://localhost:5173"
+                "http://ec2-15-164-102-179.ap-northeast-2.compute.amazonaws.com:8080"));
 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")); // 허용할 HTTP 메서드
         configuration.setAllowCredentials(true); // 인증 정보 포함 여부
-        configuration.setAllowedHeaders(Collections.singletonList("*")); // 허용할 헤더
-        configuration.setExposedHeaders(Collections.singletonList("*"));
+        configuration.setAllowedHeaders(Collections.singletonList("*")); // 요청 받을 때 허용할 헤더
+        configuration.setExposedHeaders(List.of("Authorization", "refreshToken", "Authorization-refresh"));    //서버에서 보낼때!!!
+
         configuration.setMaxAge(3600L); // Preflight 캐싱 시간
 
         // 모든 경로에 대해 CORS 설정 적용

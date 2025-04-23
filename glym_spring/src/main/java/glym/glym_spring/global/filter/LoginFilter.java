@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -83,13 +84,24 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         response.addHeader("Authorization", "Bearer " + accessToken);
 
         // 쿠키에 refreshToken 추가
-        Cookie cookie = new Cookie("refreshToken", refreshToken);
+        /*Cookie cookie = new Cookie("refreshToken", refreshToken);
         cookie.setHttpOnly(true); // HttpOnly 설정
         //배포시 true 로 수정
         cookie.setSecure(false);
         cookie.setPath("/");
         cookie.setMaxAge((int) (jwtUtil.getRefreshExpirationTime() / 1000)); // 쿠키 maxAge는 초 단위 이므로, 밀리초를 1000으로 나눔
-        response.addCookie(cookie);
+        response.addCookie(cookie);*/
+
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+                .httpOnly(true)
+                .secure(false) // 배포 환경에서는 true
+                .sameSite("None")
+                .path("/")
+                .maxAge(jwtUtil.getRefreshExpirationTime() / 1000)
+                .build();
+
+        response.setHeader("Set-Cookie", cookie.toString());
+
 
         // 로그인에 성공하면 유저 정보 반환
         response.setContentType("application/json");
