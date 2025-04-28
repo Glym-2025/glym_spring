@@ -22,6 +22,7 @@ public class AIServerResponseController {
 
     private final FontCreationRepository FontCreationRepository;
     private final FontProcessingJobRepository fontProcessingJobRepository;
+    private final FontCreationRepository fontCreationRepository;
 
     @PostMapping("/callback")
     public ResponseEntity<Void> handleCallback(@RequestBody AIResultDto result) {
@@ -29,7 +30,7 @@ public class AIServerResponseController {
         JobStatus jobStatus = JobStatus.fromString(result.getStatus());
         String s3FontPath = result.getS3FontPath();
 
-        FontProcessingJob job = fontProcessingJobRepository.findById(jobId).orElse(null);
+        FontProcessingJob job = fontProcessingJobRepository.findById(jobId).block();
         job.updateStatus(jobStatus);
         System.out.println("result = " + result);
         if (job != null) {
@@ -39,9 +40,13 @@ public class AIServerResponseController {
                     .s3FontKey(s3FontPath)
                     .s3ImageKey(job.getS3ImageKey())
                     .build();
+<<<<<<< Updated upstream
 
 
 
+=======
+            fontCreationRepository.save(fontCreation);
+>>>>>>> Stashed changes
             log.info("Callback processed for jobId: {}", jobId);
         }
         return ResponseEntity.ok().build();

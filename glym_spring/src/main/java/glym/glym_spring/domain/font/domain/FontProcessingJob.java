@@ -24,6 +24,9 @@ public class FontProcessingJob {
     @Column(name = "s3_image_key", nullable = false)
     private String s3ImageKey;
 
+    @Column(name = "s3_font_key")
+    private String s3FontKey;
+
     @Column(name = "font_name", nullable = false)
     private String fontName;
 
