@@ -7,29 +7,54 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
+    // 공통 오류
+    INVALID_REQUEST(HttpStatus.NOT_FOUND, "error.invalid.request"),
+    UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "error.unknown"),
 
-    INVALID_REQUEST(HttpStatus.NOT_FOUND, "유효하지 않은 요청입니다"),
+    // 파일 관련 오류
+    FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "file.not.found"),
+    INVALID_FILE_NAME(HttpStatus.BAD_REQUEST, "file.name.invalid"),
+    INVALID_FILE_FORMAT(HttpStatus.BAD_REQUEST, "file.format.invalid"),
+    IO_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "file.io.error"),
 
-    //이미지 파일 검증 오류
-    FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "파일을 찾을 수 없습니다."),
-    INVALID_FILE_NAME(HttpStatus.BAD_REQUEST, "유효하지 않은 파일명입니다."),
-    INVALID_FILE_FORMAT(HttpStatus.BAD_REQUEST, "지원하지 않는 파일 형식입니다. PNG 또는 JPEG 형식만 허용됩니다."),
-    INVALID_IMAGE(HttpStatus.BAD_REQUEST, "유효하지 않은 이미지 파일입니다."),
-    TEXT_SIZE_TOO_SMALL(HttpStatus.BAD_REQUEST, "글자 크기가 너무 작습니다. 최소 128x128 픽셀 이상이어야 합니다."),
-    SENTENCE_SIZE_TOO_SMALL(HttpStatus.BAD_REQUEST, "문장 크기가 너무 작습니다. 최소 512 픽셀 이상이어야 합니다."),
-    SENTENCE_SIZE_TOO_LARGE(HttpStatus.BAD_REQUEST, "문장 크기가 너무 큽니다. 최대 1024 픽셀 이하이어야 합니다."),
-    RESOLUTION_TOO_LOW(HttpStatus.BAD_REQUEST, "해상도가 너무 낮습니다. 최소 300 DPI 이상이어야 합니다."),
-    RESOLUTION_UNKNOWN(HttpStatus.BAD_REQUEST, "해상도 정보를 확인할 수 없습니다."),
-    CONTRAST_ERROR(HttpStatus.BAD_REQUEST, "대비가 요구사항을 충족하지 않습니다. 글자 ≤100, 배경 ≥200이어야 합니다."),
-    TILT_ERROR(HttpStatus.BAD_REQUEST, "이미지 기울기가 요구사항을 충족하지 않습니다. ±5° 이내여야 합니다."),
-    MARGIN_ERROR(HttpStatus.BAD_REQUEST, "이미지 여백이 요구사항을 충족하지 않습니다. 5~10px 이어야 합니다."),
+    // 이미지 관련 오류
+    INVALID_IMAGE(HttpStatus.BAD_REQUEST, "image.invalid"),
+    TEXT_SIZE_TOO_SMALL(HttpStatus.BAD_REQUEST, "image.text.size.tooSmall"),
+    SENTENCE_SIZE_TOO_SMALL(HttpStatus.BAD_REQUEST, "image.sentence.size.tooSmall"),
+    SENTENCE_SIZE_TOO_LARGE(HttpStatus.BAD_REQUEST, "image.sentence.size.tooLarge"),
+    RESOLUTION_TOO_LOW(HttpStatus.BAD_REQUEST, "image.resolution.tooLow"),
+    RESOLUTION_UNKNOWN(HttpStatus.BAD_REQUEST, "image.resolution.unknown"),
+    CONTRAST_ERROR(HttpStatus.BAD_REQUEST, "image.contrast.invalid"),
+    TILT_ERROR(HttpStatus.BAD_REQUEST, "image.tilt.invalid"),
+    MARGIN_ERROR(HttpStatus.BAD_REQUEST, "image.margin.invalid"),
+    IMAGE_SAVE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "image.save.error"),
 
-    IMAGE_SAVE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,"이미지 저장 중 오류가 발생했습니다."),
-    UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,"알 수 없는 오류가 발생했습니다."),
+    // 유저 관련 오류
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "user.find.notFound"),
+    USER_NOT_AUTHENTICATED(HttpStatus.UNAUTHORIZED, "auth.user.notAuthenticated"),
+    USER_INVALID_PRINCIPAL(HttpStatus.UNAUTHORIZED, "auth.user.invalidPrincipal"),
+    EMAIL_ALREADY_EXISTS(HttpStatus.CONFLICT, "auth.email.alreadyExists"),
+    PHONENUMBER_ALREADY_EXISTS(HttpStatus.CONFLICT, "auth.phone.alreadyExists"),
 
-    IO_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "파일 처리 중 오류가 발생했습니다.");
+    // 이메일 전송 오류
+    EMAIL_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "email.send.failed"),
+
+    // 인증 코드 오류
+    EMAIL_CODE_MISMATCH(HttpStatus.FORBIDDEN, "email.code.mismatch"),
+    EMAIL_CODE_NOT_FOUND(HttpStatus.NOT_FOUND, "email.code.notFound"),
+
+    // 토큰 오류
+    INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "token.refresh.invalid"),
+    REFRESH_TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "token.refresh.notFound"),
+    REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "token.refresh.expired"),
+    REFRESH_TOKEN_MISMATCH(HttpStatus.FORBIDDEN, "token.refresh.mismatch"),
+
+    // AI 서버 관련 오류
+    AI_SERVER_UNAVAILABLE(HttpStatus.SERVICE_UNAVAILABLE, "ai.server.unavailable"),
+    AI_SERVER_TIMEOUT(HttpStatus.GATEWAY_TIMEOUT, "ai.server.timeout"),
+    AI_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "ai.server.error"),
+    AI_CONNECTION_ERROR(HttpStatus.REQUEST_TIMEOUT, "ai.server.connection.error");
 
     private final HttpStatus status;
     private final String message;
-
 }

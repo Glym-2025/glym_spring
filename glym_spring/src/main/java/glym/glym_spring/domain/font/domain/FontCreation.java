@@ -25,9 +25,6 @@ public class FontCreation {
     @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
-//    @Column(name = "user_id", nullable = false)
-//    private Long userId;
-
     @Column(name = "font_name", nullable = false)
     private String fontName;
 

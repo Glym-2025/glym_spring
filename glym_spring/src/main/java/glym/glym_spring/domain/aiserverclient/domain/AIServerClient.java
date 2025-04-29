@@ -5,6 +5,7 @@ import glym.glym_spring.domain.aiserverclient.dto.AIRequestDto;
 import glym.glym_spring.domain.aiserverclient.dto.AIResultDto;
 import glym.glym_spring.domain.font.domain.FontProcessingJob;
 import glym.glym_spring.global.exception.domain.AIServerException;
+import glym.glym_spring.global.exception.domain.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
-import static glym.glym_spring.global.exception.errorcode.AiServerErrorCode.*;
+import static glym.glym_spring.global.exception.errorcode.ErrorCode.*;
 
 @Slf4j
 @Component
@@ -43,11 +44,9 @@ public class AIServerClient {
                     .build()
                     .toUri();
 
-
-            // AI 서버에 전달할 요청 데이터
             // jobId를 포함해 AI 서버가 이를 콜백에 재사용하도록
             AIRequestDto request = AIRequestDto.builder()
-                    .userId(job.getUserId())
+                    .userId(job.getUser().getId())
                     .s3ImageKey(job.getS3ImageKey())
                     .callbackUrl(callbackUrl)
                     .fontName(job.getFontName())
@@ -65,7 +64,7 @@ public class AIServerClient {
                     .retrieve()
                     .onStatus(status -> status != HttpStatus.OK, (req, res) -> {
                         log.error("AI server returned error. jobId: {}, status: {}", request.getJobId(), res.getStatusCode());
-                        throw new AIServerException(AI_SERVER_ERROR);
+                        throw new CustomException(AI_SERVER_ERROR);
                     })
                     .toEntity(AIRequestAckDto.class)
                     .getBody();
@@ -83,7 +82,7 @@ public class AIServerClient {
 
         } catch (Exception e) {
             log.error("Error connecting to AI server. jobId: {}, message: {}", job.getJobId(), e.getMessage());
-            throw new AIServerException(AI_CONNECTION_ERROR);
+            throw new CustomException(AI_CONNECTION_ERROR);
         }
     }
 }

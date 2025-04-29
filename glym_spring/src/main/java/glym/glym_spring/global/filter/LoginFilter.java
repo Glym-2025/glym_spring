@@ -8,7 +8,7 @@ import glym.glym_spring.global.exception.errorcode.ErrorCode;
 import glym.glym_spring.global.utils.JWTUtil;
 import glym.glym_spring.auth.dto.CustomUserDetails;
 import glym.glym_spring.auth.dto.LoginRequest;
-import glym.glym_spring.global.exception.CustomExceptionRefactor;
+
 
 import glym.glym_spring.auth.dto.LoginResponse;
 import jakarta.servlet.FilterChain;
