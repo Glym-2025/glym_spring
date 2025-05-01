@@ -1,5 +1,6 @@
 package glym.glym_spring.global.filter;
 
+import com.amazonaws.Response;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import glym.glym_spring.auth.service.RefreshTokenService;
 import glym.glym_spring.global.dto.ApiResponse;
@@ -17,6 +18,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -40,7 +42,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
 
-            LoginRequest loginRequest =objectMapper.readValue(request.getInputStream(), LoginRequest.class);
+            LoginRequest loginRequest = objectMapper.readValue(request.getInputStream(), LoginRequest.class);
             //클라이언트 요청에서 username, password 추출
             String email = loginRequest.getEmail();
             String password = loginRequest.getPassword();
@@ -82,6 +84,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         //헤더에 AccessToken 추가
         response.addHeader("Authorization", "Bearer " + accessToken);
 
+        /*
         // 쿠키에 refreshToken 추가
         Cookie cookie = new Cookie("refreshToken", refreshToken);
         cookie.setHttpOnly(true); // HttpOnly 설정
@@ -90,6 +93,17 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         cookie.setPath("/");
         cookie.setMaxAge((int) (jwtUtil.getRefreshExpirationTime() / 1000)); // 쿠키 maxAge는 초 단위 이므로, 밀리초를 1000으로 나눔
         response.addCookie(cookie);
+        */
+
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("None")
+                .path("/")
+                .maxAge(jwtUtil.getRefreshExpirationTime() / 1000)
+                .build();
+
+        response.setHeader("Set-Cookie", cookie.toString());
 
         // 로그인에 성공하면 유저 정보 반환
         response.setContentType("application/json");
@@ -115,7 +129,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         response.setCharacterEncoding("UTF-8");
         response.setStatus(401);
 
-        ApiResponse<String> apiResponse = new ApiResponse<>(failed.getMessage(), response.getStatus(), "Login Failed" );
+        ApiResponse<String> apiResponse = new ApiResponse<>(failed.getMessage(), response.getStatus(), "Login Failed");
         response.getWriter().write(objectMapper.writeValueAsString(apiResponse));
     }
 }

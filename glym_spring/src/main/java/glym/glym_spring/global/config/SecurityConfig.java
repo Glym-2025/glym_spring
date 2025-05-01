@@ -108,7 +108,7 @@ public class SecurityConfig {
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")); // 허용할 HTTP 메서드
         configuration.setAllowCredentials(true); // 인증 정보 포함 여부
         configuration.setAllowedHeaders(Collections.singletonList("*")); // 허용할 헤더
-        configuration.setExposedHeaders(Collections.singletonList("*"));
+        configuration.setExposedHeaders(List.of("Authorization", "refreshToken", "Authorization-refresh"));
         configuration.setMaxAge(3600L); // Preflight 캐싱 시간
 
         // 모든 경로에 대해 CORS 설정 적용
