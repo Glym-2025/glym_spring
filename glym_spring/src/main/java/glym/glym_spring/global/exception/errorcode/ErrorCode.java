@@ -2,7 +2,10 @@ package glym.glym_spring.global.exception.errorcode;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
+
+import java.util.Locale;
 
 @Getter
 @AllArgsConstructor
@@ -58,4 +61,8 @@ public enum ErrorCode {
 
     private final HttpStatus status;
     private final String message;
+
+    public String getMessage(MessageSource messageSource, Locale locale) {
+        return messageSource.getMessage(message,null,locale);
+    }
 }
