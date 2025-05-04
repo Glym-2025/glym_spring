@@ -48,6 +48,7 @@ public enum ErrorCode {
     REFRESH_TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "token.refresh.notFound"),
     REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "token.refresh.expired"),
     REFRESH_TOKEN_MISMATCH(HttpStatus.FORBIDDEN, "token.refresh.mismatch"),
+    JOB_NOT_FOUND(HttpStatus.NOT_FOUND, "job.find.notFound"),
 
     // AI 서버 관련 오류
     AI_SERVER_UNAVAILABLE(HttpStatus.SERVICE_UNAVAILABLE, "ai.server.unavailable"),
