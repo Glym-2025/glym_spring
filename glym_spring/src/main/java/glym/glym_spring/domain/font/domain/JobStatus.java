@@ -25,4 +25,9 @@ public enum JobStatus {
             throw new IllegalArgumentException(INVALID_STATUS);
         }
     }
+
+    @Override
+    public String toString() {
+        return name().toLowerCase();
+    }
 }
