@@ -8,13 +8,10 @@ import glym.glym_spring.domain.font.service.FontService;
 import glym.glym_spring.global.exception.domain.ImageValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -41,7 +38,7 @@ public class FontController implements FontControllerDocs {
     }
 
     @Override
-    @GetMapping(value = "/jobs/{jobId}/status", produces = "text/event-stream")
+    @GetMapping(value = "/{jobId}/status", produces = "text/event-stream")
     public SseEmitter streamJobStatus(@PathVariable String jobId) {
         SseEmitter emitter = new SseEmitter(30_000L); // 30초 타임아웃
         new Thread(() -> {

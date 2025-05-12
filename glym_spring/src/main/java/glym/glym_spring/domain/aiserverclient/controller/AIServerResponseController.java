@@ -6,21 +6,15 @@ import glym.glym_spring.domain.font.domain.FontProcessingJob;
 import glym.glym_spring.domain.font.domain.JobStatus;
 import glym.glym_spring.domain.font.repository.FontCreationRepository;
 import glym.glym_spring.domain.font.repository.FontProcessingJobRepository;
-import glym.glym_spring.domain.user.domain.User;
 import glym.glym_spring.domain.user.repository.UserRepository;
 import glym.glym_spring.global.exception.domain.CustomException;
-import glym.glym_spring.global.exception.errorcode.ErrorCode;
-import glym.glym_spring.global.utils.SecurityUtils;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
 import static glym.glym_spring.global.exception.errorcode.ErrorCode.*;
-import static glym.glym_spring.global.exception.errorcode.ErrorCode.USER_NOT_FOUND;
-
 
 @RestController
 @Slf4j
@@ -43,11 +37,13 @@ public class AIServerResponseController {
                     log.error("Job not found for jobId: {}", jobId);
                     return new CustomException(JOB_NOT_FOUND);
                 });
+        System.out.println("job = " + job.getStatus());
         job.updateStatus(jobStatus);
-        System.out.println("result = " + result);
+        job.setS3FontKey(s3FontPath);
+        fontProcessingJobRepository.save(job);
+        System.out.println("job = " + job.getStatus());
+
         if (job != null) {
-
-
 
             FontCreation fontCreation = FontCreation.builder()
                     .fontName(job.getFontName())
@@ -61,5 +57,4 @@ public class AIServerResponseController {
         }
         return ResponseEntity.ok().build();
     }
-
 }

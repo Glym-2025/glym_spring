@@ -108,12 +108,13 @@ public class FontService {
                         } catch (InterruptedException e) {
                             Thread.currentThread().interrupt();
                         }
-                        String status = job.getStatus().toString();
+                        String status = job.getStatus().toString().toUpperCase();
                         String fontUrl = null;
                         String errorMessage = null;
-
+                        System.out.println("status = " + status);
                         if ("COMPLETED".equals(status) && job.getS3FontKey() != null) {
                             fontUrl = generatePresignedUrl(job.getS3FontKey());
+                            System.out.println("good job");
                             running = false; // 완료 시 종료
                         } else if ("FAILED".equals(status)) {
                             errorMessage = job.getErrorMessage();
@@ -128,13 +129,24 @@ public class FontService {
     }
 
     private String generatePresignedUrl(String objectKey) {
+        // objectKey에서 s3://버킷명/ 부분 제거
+        final String processedKey;
+        if (objectKey.startsWith("s3://")) {
+            int pathStartIndex = objectKey.indexOf("/", 5);
+            if (pathStartIndex != -1) {
+                processedKey = objectKey.substring(pathStartIndex + 1);
+            } else {
+                processedKey = objectKey; // 기본값 설정
+            }
+        } else {
+            processedKey = objectKey;
+        }
+
         var presignRequest = GetObjectPresignRequest.builder()
                 .signatureDuration(Duration.ofMinutes(10))
-                .getObjectRequest(b -> b.bucket("my-bucket").key(objectKey))
+                .getObjectRequest(b -> b.bucket(bucketName).key(processedKey))
                 .build();
         return s3Presigner.presignGetObject(presignRequest).url().toString();
     }
-
-
 
 }

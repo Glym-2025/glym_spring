@@ -3,7 +3,6 @@ package glym.glym_spring.domain.font.domain;
 import glym.glym_spring.domain.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -18,9 +17,6 @@ public class FontProcessingJob {
     @Id
     @Column(name = "job_id", nullable = false, unique = true)
     private String jobId; // UUID
-
-//    @Column(name = "user_id", nullable = false)
-//    private Long userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = true)
