@@ -43,6 +43,7 @@ public class FontService {
     private final UserRepository userRepository;
     private final S3Presigner s3Presigner;
 
+
     @Value("${cloud.aws.s3.bucket-name}")
     private String bucketName;
 
@@ -85,7 +86,11 @@ public class FontService {
     }
 
     public Iterable<JobStatusResponseDto> getJobStatusIterable(String jobId) {
+        //Long userId = SecurityUtils.getCurrentUserId();
+
+        //System.out.println("userId = " + userId);
         return new Iterable<JobStatusResponseDto>() {
+          //  private final Long userId = SecurityUtils.getCurrentUserId();
             @Override
             public Iterator<JobStatusResponseDto> iterator() {
                 return new Iterator<JobStatusResponseDto>() {
@@ -111,7 +116,7 @@ public class FontService {
                         String status = job.getStatus().toString().toUpperCase();
                         String fontUrl = null;
                         String errorMessage = null;
-                        System.out.println("status = " + status);
+
                         if ("COMPLETED".equals(status) && job.getS3FontKey() != null) {
                             fontUrl = generatePresignedUrl(job.getS3FontKey());
                             System.out.println("good job");
