@@ -1,9 +1,8 @@
 package glym.glym_spring.global.utils;
 
 
-import glym.glym_spring.auth.dto.CustomUserDetails;
+import glym.glym_spring.domain.auth.dto.CustomUserDetails;
 import glym.glym_spring.global.exception.domain.CustomException;
-import glym.glym_spring.global.exception.errorcode.ErrorCode;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 

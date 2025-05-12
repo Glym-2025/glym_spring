@@ -1,6 +1,6 @@
 package glym.glym_spring.global.config;
 
-import glym.glym_spring.auth.service.RefreshTokenService;
+import glym.glym_spring.domain.auth.service.RefreshTokenService;
 import glym.glym_spring.global.filter.JWTFilter;
 import glym.glym_spring.global.filter.LoginFilter;
 import glym.glym_spring.global.utils.JWTUtil;

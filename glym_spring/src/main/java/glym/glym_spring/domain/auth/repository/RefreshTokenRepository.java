@@ -1,6 +1,6 @@
-package glym.glym_spring.auth.repository;
+package glym.glym_spring.domain.auth.repository;
 
-import glym.glym_spring.auth.domain.RefreshToken;
+import glym.glym_spring.domain.auth.domain.RefreshToken;
 import glym.glym_spring.domain.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 

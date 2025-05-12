@@ -1,4 +1,4 @@
-package glym.glym_spring.auth.dto;
+package glym.glym_spring.domain.auth.dto;
 
 import glym.glym_spring.domain.user.domain.User;
 import lombok.RequiredArgsConstructor;

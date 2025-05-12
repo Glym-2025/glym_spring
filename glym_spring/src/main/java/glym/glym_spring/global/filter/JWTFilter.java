@@ -3,7 +3,7 @@ package glym.glym_spring.global.filter;
 import glym.glym_spring.domain.user.domain.User;
 import glym.glym_spring.global.config.SecurityUrls;
 import glym.glym_spring.global.utils.JWTUtil;
-import glym.glym_spring.auth.dto.CustomUserDetails;
+import glym.glym_spring.domain.auth.dto.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

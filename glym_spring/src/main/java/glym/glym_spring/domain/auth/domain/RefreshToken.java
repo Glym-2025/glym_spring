@@ -1,4 +1,4 @@
-package glym.glym_spring.auth.domain;
+package glym.glym_spring.domain.auth.domain;
 
 import glym.glym_spring.domain.user.domain.User;
 import jakarta.persistence.*;

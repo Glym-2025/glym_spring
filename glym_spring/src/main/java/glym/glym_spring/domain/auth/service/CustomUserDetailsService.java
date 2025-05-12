@@ -1,8 +1,8 @@
-package glym.glym_spring.auth.service;
+package glym.glym_spring.domain.auth.service;
 
 import glym.glym_spring.domain.user.domain.User;
 import glym.glym_spring.domain.user.repository.UserRepository;
-import glym.glym_spring.auth.dto.CustomUserDetails;
+import glym.glym_spring.domain.auth.dto.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
