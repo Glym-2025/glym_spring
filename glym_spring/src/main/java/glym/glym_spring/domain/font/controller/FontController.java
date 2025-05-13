@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Locale;
 
 @Controller
-@RequestMapping("/font")
+@RequestMapping("/api/font")
 @RequiredArgsConstructor
 public class FontController implements FontControllerDocs {
 

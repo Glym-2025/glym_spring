@@ -9,11 +9,11 @@ public class SecurityUrls {
      */
     public static final List<String> AUTH_WHITELIST = Arrays.asList(
             // API
-            "/auth/login", // 로그인
-            "/auth/refresh",
-            "/auth/send-email",
-            "/auth/verify-email",
-            "/signup/**", // 회원가입
+            "/api/auth/login", // 로그인
+            "/api/auth/refresh",
+            "/api/auth/send-email",
+            "/api/auth/verify-email",
+            "/api/signup/**", // 회원가입
             //"/font/**",
             // Swagger
             "/api/font/callback",
