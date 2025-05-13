@@ -4,7 +4,7 @@ import glym.glym_spring.domain.auth.domain.RefreshToken;
 import glym.glym_spring.domain.user.domain.User;
 import glym.glym_spring.domain.auth.repository.RefreshTokenRepository;
 import glym.glym_spring.global.dto.ApiResponse;
-import glym.glym_spring.global.exception.CustomException;
+import glym.glym_spring.global.exception.domain.EmailException;
 
 import glym.glym_spring.global.exception.errorcode.ErrorCode;
 import glym.glym_spring.global.utils.JWTUtil;
@@ -84,7 +84,7 @@ public class RefreshTokenService {
         log.info("custom: " + customUserDetails.getUser().getId());
         log.info("user: " + user.getId());
         if (!user.getId().equals(customUserDetails.getUser().getId())) {
-            throw new CustomException(ErrorCode.REFRESH_TOKEN_MISMATCH);
+            throw new EmailException(ErrorCode.REFRESH_TOKEN_MISMATCH);
         }
 
         refreshTokenRepository.deleteByUser(user);
@@ -96,18 +96,18 @@ public class RefreshTokenService {
     private RefreshToken validateRefreshToken(String refreshToken) {
         // 토큰 유효성 검사
         if (!jwtUtil.validateToken(refreshToken)) {
-            throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
+            throw new EmailException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
 
         Optional<RefreshToken> optionalToken = refreshTokenRepository.findByToken(refreshToken);
 
         //토큰 db 에 존재하는지 검사
         RefreshToken savedToken = optionalToken
-                .orElseThrow(() -> new CustomException(ErrorCode.REFRESH_TOKEN_NOT_FOUND));
+                .orElseThrow(() -> new EmailException(ErrorCode.REFRESH_TOKEN_NOT_FOUND));
 
         // 만료 여부 검증
         if (savedToken.getExpiresAt().isBefore(LocalDateTime.now())) {
-            throw new CustomException(ErrorCode.REFRESH_TOKEN_EXPIRED);
+            throw new EmailException(ErrorCode.REFRESH_TOKEN_EXPIRED);
         }
 
         return savedToken;

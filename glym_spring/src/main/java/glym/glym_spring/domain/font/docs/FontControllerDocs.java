@@ -1,6 +1,7 @@
 package glym.glym_spring.domain.font.docs;
 
 import glym.glym_spring.domain.font.dto.FontCreateRequest;
+import glym.glym_spring.domain.font.dto.FontListResponseDto;
 import glym.glym_spring.domain.font.dto.JobStatusResponseDto;
 import glym.glym_spring.domain.font.dto.SuccessResponse;
 import glym.glym_spring.global.exception.ErrorResponse;
@@ -15,6 +16,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -145,4 +147,53 @@ public interface FontControllerDocs {
             @Parameter(description = "작업 ID", required = true, example = "작업 uuid")
             @PathVariable String jobId
     );
+
+    @Operation(
+            summary = "사용자 폰트 목록 조회",
+            description = """
+        현재 로그인한 사용자가 생성한 모든 폰트 목록을 반환합니다.
+        
+        **응답**
+        - 200 OK: 폰트 목록 반환
+            [
+              {
+                "id": 1,
+                "fontName": "나의 첫 폰트",
+                "createdAt": "2023-05-13T14:30:45",
+                "fontUrl": "https://my-bucket.s3.amazonaws.com/fonts/user_1/font_1.ttf?presigned"
+              },
+              ...
+            ]
+        - 401 Unauthorized: 인증되지 않은 사용자
+        - 500 Internal Server Error: 서버 오류 발생
+        """
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "폰트 목록 조회 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = FontListResponseDto.class, type = "array")
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "인증되지 않은 사용자",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버 오류",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class)
+                    )
+            )
+    })
+    @GetMapping("/fonts")
+    ResponseEntity<?> getUserFonts();
 }

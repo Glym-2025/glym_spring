@@ -1,10 +1,9 @@
 package glym.glym_spring.global.filter;
 
-import com.amazonaws.Response;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import glym.glym_spring.domain.auth.service.RefreshTokenService;
 import glym.glym_spring.global.dto.ApiResponse;
-import glym.glym_spring.global.exception.CustomException;
+import glym.glym_spring.global.exception.domain.EmailException;
 import glym.glym_spring.global.exception.errorcode.ErrorCode;
 import glym.glym_spring.global.utils.JWTUtil;
 import glym.glym_spring.domain.auth.dto.CustomUserDetails;
@@ -13,7 +12,6 @@ import glym.glym_spring.domain.auth.dto.LoginRequest;
 
 import glym.glym_spring.domain.auth.dto.LoginResponse;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +52,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             return authenticationManager.authenticate(authToken);
         } catch (IOException e) {
             log.error("JSON 파싱 중 오류 발생");
-            throw new CustomException(ErrorCode.INVALID_REQUEST);
+            throw new EmailException(ErrorCode.INVALID_REQUEST);
         }
     }
 

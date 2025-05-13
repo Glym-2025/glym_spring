@@ -1,6 +1,6 @@
 package glym.glym_spring.domain.auth.service;
 
-import glym.glym_spring.global.exception.CustomException;
+import glym.glym_spring.global.exception.domain.EmailException;
 import glym.glym_spring.global.exception.errorcode.ErrorCode;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -49,7 +49,7 @@ public class EmailService {
         try{
             mailSender.send(mimeMessage);
         } catch (MailException e) {
-           throw new CustomException(ErrorCode.EMAIL_SEND_FAILED, to);
+           throw new EmailException(ErrorCode.EMAIL_SEND_FAILED, to);
         }
     }
 
@@ -57,12 +57,12 @@ public class EmailService {
         String key = "authCode:" + email;
 
         if(!authCodeRedisTemplate.hasKey(key)) {
-            throw new CustomException(ErrorCode.EMAIL_CODE_NOT_FOUND, email);
+            throw new EmailException(ErrorCode.EMAIL_CODE_NOT_FOUND, email);
         }
         String storedCode = authCodeRedisTemplate.opsForValue().get(key).toString();
 
         if(!storedCode.equals(code)) {
-            throw new CustomException(ErrorCode.EMAIL_CODE_MISMATCH, email);
+            throw new EmailException(ErrorCode.EMAIL_CODE_MISMATCH, email);
         }
 
         authCodeRedisTemplate.delete(key);
