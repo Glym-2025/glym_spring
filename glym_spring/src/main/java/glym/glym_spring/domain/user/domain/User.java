@@ -79,5 +79,12 @@ public class User {
         updatedAt = LocalDateTime.now();
     }
 
+    public void updateProfile(String username, String phone, String profileImageURL) {
+        this.username = username;
+        this.phone = phone;
+        this.profileImageURL = profileImageURL;
+    }
+
+
 }
 
