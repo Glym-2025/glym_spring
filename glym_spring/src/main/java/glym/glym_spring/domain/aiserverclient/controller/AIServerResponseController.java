@@ -19,7 +19,7 @@ import static glym.glym_spring.global.exception.errorcode.ErrorCode.*;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("api")
+@RequestMapping("/api")
 public class AIServerResponseController {
 
     private final FontCreationRepository fontCreationRepository;

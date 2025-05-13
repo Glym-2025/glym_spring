@@ -44,7 +44,7 @@ public class SecurityConfig {
                 jwtUtil,
                 authenticationManager(authenticationConfiguration),
                 refreshTokenService);
-        loginFilter.setFilterProcessesUrl("/auth/login");
+        loginFilter.setFilterProcessesUrl("/api/auth/login");
 
         http
                 // cors 설정
@@ -58,13 +58,13 @@ public class SecurityConfig {
                 //경로별 인가 작업
                 .authorizeHttpRequests((auth) -> auth
                         .dispatcherTypeMatchers(DispatcherType.ASYNC, DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
-                        .requestMatchers("/login",
-                                "/signup",
-                                "/signup/**",
-                                "/auth/login",
-                                "/auth/refresh",
-                                "/auth/send-email",
-                                "auth/verify-email",
+                        .requestMatchers("/api/login",
+                                "/api/signup",
+                                "/api/signup/**",
+                                "/api/auth/login",
+                                "/api/auth/refresh",
+                                "/api/auth/send-email",
+                                "/api/auth/verify-email",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-resources/**",
@@ -105,11 +105,14 @@ public class SecurityConfig {
                 "http://localhost:5173"
                 ,"http://localhost:3000",
                 "http://localhost:8080",
-                "http://ec2-15-164-102-179.ap-northeast-2.compute.amazonaws.com:8080")); // 허용할 오리진 TODO: CORS 경로 설정 "http://localhost:5173"
+                "http://ec2-15-164-102-179.ap-northeast-2.compute.amazonaws.com",
+                "http://ec2-15-164-102-179.ap-northeast-2.compute.amazonaws.com:8080",
+                "http://www.glymfont.store",
+                "https://www.glymfont.store")); // 허용할 오리진 TODO: CORS 경로 설정 "http://localhost:5173"
 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")); // 허용할 HTTP 메서드
         configuration.setAllowCredentials(true); // 인증 정보 포함 여부
-        configuration.setAllowedHeaders(Collections.singletonList("*")); // 허용할 헤더
+        configuration.setAllowedHeaders(List.of("Content-Type", "Authorization", "refreshToken")); // 허용할 헤더
         configuration.setExposedHeaders(List.of("Authorization", "refreshToken", "Authorization-refresh"));
         configuration.setMaxAge(3600L); // Preflight 캐싱 시간
 
