@@ -1,7 +1,7 @@
 package glym.glym_spring.global.utils;
 
-import glym.glym_spring.auth.dto.CustomUserDetails;
-import glym.glym_spring.auth.service.CustomUserDetailsService;
+import glym.glym_spring.domain.auth.dto.CustomUserDetails;
+import glym.glym_spring.domain.auth.service.CustomUserDetailsService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

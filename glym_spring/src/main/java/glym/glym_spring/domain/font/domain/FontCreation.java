@@ -3,10 +3,7 @@ package glym.glym_spring.domain.font.domain;
 import glym.glym_spring.domain.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "font_creations")

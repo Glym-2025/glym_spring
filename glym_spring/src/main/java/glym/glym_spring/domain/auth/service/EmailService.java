@@ -1,4 +1,4 @@
-package glym.glym_spring.auth.service;
+package glym.glym_spring.domain.auth.service;
 
 import glym.glym_spring.global.exception.CustomException;
 import glym.glym_spring.global.exception.errorcode.ErrorCode;

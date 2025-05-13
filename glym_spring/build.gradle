@@ -54,13 +54,16 @@ dependencies {
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+
 	//metadata 검증을 위한
 	implementation 'com.drewnoakes:metadata-extractor:2.18.0'
 	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.663'
+	implementation 'software.amazon.awssdk:s3:2.20.0'
+
 	implementation 'mysql:mysql-connector-java:8.0.33'
 
-
 	implementation 'com.amazonaws:aws-java-sdk-core:1.12.663'
+
 	implementation 'commons-io:commons-io:2.11.0'
 
 	implementation 'com.drewnoakes:metadata-extractor:2.18.0'

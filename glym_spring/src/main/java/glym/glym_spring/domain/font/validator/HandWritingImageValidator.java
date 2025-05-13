@@ -62,7 +62,6 @@ public class HandWritingImageValidator {
         if (!ALLOWED_EXTENSIONS.contains(extension.toLowerCase())) {
             throw new ImageValidationException(ErrorCode.INVALID_FILE_FORMAT);
         }
-
     }
 
     /**
@@ -143,6 +142,4 @@ public class HandWritingImageValidator {
         int dotIndex = filename.lastIndexOf('.');
         return (dotIndex == -1) ? "" : filename.substring(dotIndex + 1);
     }
-
-
 }

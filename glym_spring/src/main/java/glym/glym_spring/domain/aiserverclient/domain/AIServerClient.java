@@ -2,9 +2,7 @@ package glym.glym_spring.domain.aiserverclient.domain;
 
 import glym.glym_spring.domain.aiserverclient.dto.AIRequestAckDto;
 import glym.glym_spring.domain.aiserverclient.dto.AIRequestDto;
-import glym.glym_spring.domain.aiserverclient.dto.AIResultDto;
 import glym.glym_spring.domain.font.domain.FontProcessingJob;
-import glym.glym_spring.global.exception.domain.AIServerException;
 import glym.glym_spring.global.exception.domain.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -68,8 +66,6 @@ public class AIServerClient {
                     })
                     .toEntity(AIRequestAckDto.class)
                     .getBody();
-
-            System.out.println(response);
 
             // 응답이 null이 아니면 요청 성공, DB에 상태 저장
             if (response != null) {

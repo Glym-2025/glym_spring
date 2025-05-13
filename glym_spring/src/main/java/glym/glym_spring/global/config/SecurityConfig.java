@@ -1,9 +1,10 @@
 package glym.glym_spring.global.config;
 
-import glym.glym_spring.auth.service.RefreshTokenService;
+import glym.glym_spring.domain.auth.service.RefreshTokenService;
 import glym.glym_spring.global.filter.JWTFilter;
 import glym.glym_spring.global.filter.LoginFilter;
 import glym.glym_spring.global.utils.JWTUtil;
+import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -56,6 +57,7 @@ public class SecurityConfig {
                 .httpBasic((auth) -> auth.disable())
                 //경로별 인가 작업
                 .authorizeHttpRequests((auth) -> auth
+                        .dispatcherTypeMatchers(DispatcherType.ASYNC, DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
                         .requestMatchers("/login",
                                 "/signup",
                                 "/signup/**",
@@ -69,8 +71,8 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
                                 "/swagger-custom.css",
                                 "/static/**",
-                                "/font/**",
                                 "/api/callback").permitAll()
+                        .requestMatchers("/font/**").authenticated()
 
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated())

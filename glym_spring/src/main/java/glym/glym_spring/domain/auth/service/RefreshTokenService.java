@@ -1,14 +1,14 @@
-package glym.glym_spring.auth.service;
+package glym.glym_spring.domain.auth.service;
 
-import glym.glym_spring.auth.domain.RefreshToken;
+import glym.glym_spring.domain.auth.domain.RefreshToken;
 import glym.glym_spring.domain.user.domain.User;
-import glym.glym_spring.auth.repository.RefreshTokenRepository;
+import glym.glym_spring.domain.auth.repository.RefreshTokenRepository;
 import glym.glym_spring.global.dto.ApiResponse;
 import glym.glym_spring.global.exception.CustomException;
 
 import glym.glym_spring.global.exception.errorcode.ErrorCode;
 import glym.glym_spring.global.utils.JWTUtil;
-import glym.glym_spring.auth.dto.CustomUserDetails;
+import glym.glym_spring.domain.auth.dto.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;

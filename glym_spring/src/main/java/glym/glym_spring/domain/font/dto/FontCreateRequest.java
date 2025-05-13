@@ -14,6 +14,4 @@ public class FontCreateRequest {
 
     @Schema(description = "생성할 폰트 이름", example = "MyHandFont")
     private String fontName;
-
-
 }

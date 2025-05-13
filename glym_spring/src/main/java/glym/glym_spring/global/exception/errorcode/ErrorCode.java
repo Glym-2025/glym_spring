@@ -2,7 +2,10 @@ package glym.glym_spring.global.exception.errorcode;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
+
+import java.util.Locale;
 
 @Getter
 @AllArgsConstructor
@@ -48,6 +51,7 @@ public enum ErrorCode {
     REFRESH_TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED, "token.refresh.notFound"),
     REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "token.refresh.expired"),
     REFRESH_TOKEN_MISMATCH(HttpStatus.FORBIDDEN, "token.refresh.mismatch"),
+    JOB_NOT_FOUND(HttpStatus.NOT_FOUND, "job.find.notFound"),
 
     // AI 서버 관련 오류
     AI_SERVER_UNAVAILABLE(HttpStatus.SERVICE_UNAVAILABLE, "ai.server.unavailable"),
@@ -57,4 +61,8 @@ public enum ErrorCode {
 
     private final HttpStatus status;
     private final String message;
+
+    public String getMessage(MessageSource messageSource, Locale locale) {
+        return messageSource.getMessage(message,null,locale);
+    }
 }

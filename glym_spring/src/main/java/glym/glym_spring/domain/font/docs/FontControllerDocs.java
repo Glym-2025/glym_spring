@@ -1,6 +1,7 @@
 package glym.glym_spring.domain.font.docs;
 
 import glym.glym_spring.domain.font.dto.FontCreateRequest;
+import glym.glym_spring.domain.font.dto.JobStatusResponseDto;
 import glym.glym_spring.domain.font.dto.SuccessResponse;
 import glym.glym_spring.global.exception.ErrorResponse;
 import glym.glym_spring.global.exception.domain.ImageValidationException;
@@ -14,13 +15,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 
 @Tag(name = "Font", description = "폰트 관련 API")
 public interface FontControllerDocs {
-
 
     @Operation(
             summary = "폰트 생성",
@@ -84,4 +87,62 @@ public interface FontControllerDocs {
             )
             FontCreateRequest request
     ) throws ImageValidationException, IOException;
+
+    @Operation(
+            summary = "폰트 생성 상태 스트리밍",
+            description = """
+            주어진 jobId에 해당하는 폰트 생성 작업의 상태를 실시간으로 스트리밍합니다. Server-Sent Events (SSE)를 사용하여 데이터를 전송합니다.
+
+            **요청**
+            - jobId: 작업 ID (경로 파라미터)
+
+            **응답 형식**
+            - MIME 타입: `text/event-stream`
+            - 각 이벤트는 SSE 형식으로 전송되며, `data:` 필드에 JSON 문자열 포함
+            - 예시:
+                ```
+                data: {"status": "PROGRESSING"}
+                data: {"status": "COMPLETED", "fontUrl": "https://my-bucket.s3.amazonaws.com/fonts/123.ttf?presigned"}
+                data: {"status": "FAILED", "errorMessage": "Invalid font format"}
+                ```
+
+            **상태 값**
+            - `PROGRESSING`: 작업 진행 중
+            - `COMPLETED`: 작업 완료 (fontUrl 포함)
+            - `FAILED`: 작업 실패 (errorMessage 포함)
+
+            **주의**
+            - 클라이언트는 SSE 연결을 유지해야 하며, 작업이 완료되거나 실패하면 스트림이 종료됩니다.
+            """
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "SSE 스트림 시작",
+                    content = @Content(
+                            mediaType = "text/event-stream",
+                            schema = @Schema(implementation = String.class, example = "data: {\"status\": \"PROGRESSING\"}\n\n")
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "작업 ID를 찾을 수 없음",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버 오류",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class)
+                    )
+            )
+    })
+    SseEmitter streamJobStatus(
+            @Parameter(description = "작업 ID", required = true, example = "작업 uuid")
+            @PathVariable String jobId
+    );
 }

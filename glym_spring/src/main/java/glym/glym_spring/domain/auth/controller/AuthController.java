@@ -1,11 +1,12 @@
-package glym.glym_spring.auth.controller;
+package glym.glym_spring.domain.auth.controller;
 
 import glym.glym_spring.auth.dto.*;
-import glym.glym_spring.auth.service.EmailService;
-import glym.glym_spring.auth.service.RefreshTokenService;
+import glym.glym_spring.domain.auth.dto.*;
+import glym.glym_spring.domain.auth.service.EmailService;
+import glym.glym_spring.domain.auth.service.RefreshTokenService;
 import glym.glym_spring.global.dto.ApiResponse;
 import glym.glym_spring.global.utils.JWTUtil;
-import glym.glym_spring.auth.docs.AuthDocs;
+import glym.glym_spring.domain.auth.docs.AuthDocs;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
