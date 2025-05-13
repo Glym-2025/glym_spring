@@ -1,6 +1,6 @@
 package glym.glym_spring.domain.auth.docs;
 
-import glym.glym_spring.auth.dto.*;
+
 import glym.glym_spring.domain.auth.dto.*;
 import glym.glym_spring.global.dto.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
