@@ -93,23 +93,23 @@ public class RefreshTokenService {
                 .body(new ApiResponse<>(customUserDetails.getUsername(), "Logout Success"));
     }
 
-        private RefreshToken validateRefreshToken(String refreshToken) {
-            // 토큰 유효성 검사
-            if (!jwtUtil.validateToken(refreshToken)) {
-                throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
-            }
-
-            Optional<RefreshToken> optionalToken = refreshTokenRepository.findByToken(refreshToken);
-
-            //토큰 db 에 존재하는지 검사
-            RefreshToken savedToken = optionalToken
-                    .orElseThrow(() -> new CustomException(ErrorCode.REFRESH_TOKEN_NOT_FOUND));
-
-            // 만료 여부 검증
-            if (savedToken.getExpiresAt().isBefore(LocalDateTime.now())) {
-                throw new CustomException(ErrorCode.REFRESH_TOKEN_EXPIRED);
-            }
-
-            return savedToken;
+    private RefreshToken validateRefreshToken(String refreshToken) {
+        // 토큰 유효성 검사
+        if (!jwtUtil.validateToken(refreshToken)) {
+            throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
+
+        Optional<RefreshToken> optionalToken = refreshTokenRepository.findByToken(refreshToken);
+
+        //토큰 db 에 존재하는지 검사
+        RefreshToken savedToken = optionalToken
+                .orElseThrow(() -> new CustomException(ErrorCode.REFRESH_TOKEN_NOT_FOUND));
+
+        // 만료 여부 검증
+        if (savedToken.getExpiresAt().isBefore(LocalDateTime.now())) {
+            throw new CustomException(ErrorCode.REFRESH_TOKEN_EXPIRED);
+        }
+
+        return savedToken;
+    }
 }

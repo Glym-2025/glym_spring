@@ -1,6 +1,5 @@
 package glym.glym_spring.domain.auth.controller;
 
-import glym.glym_spring.auth.dto.*;
 import glym.glym_spring.domain.auth.dto.*;
 import glym.glym_spring.domain.auth.service.EmailService;
 import glym.glym_spring.domain.auth.service.RefreshTokenService;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController implements AuthDocs {
 
     private final JWTUtil jwtUtil;
