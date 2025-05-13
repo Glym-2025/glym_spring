@@ -1,18 +1,20 @@
 package glym.glym_spring.domain.font.service;
 
-import glym.glym_spring.domain.aiserverclient.domain.AIServerClient;
+
 import glym.glym_spring.domain.font.domain.FontProcessingJob;
+import glym.glym_spring.domain.font.dto.AIRequestDto;
 import glym.glym_spring.domain.font.dto.FontCreateRequest;
 import glym.glym_spring.domain.font.dto.JobStatusResponseDto;
 import glym.glym_spring.domain.font.repository.FontCreationRepository;
 import glym.glym_spring.domain.font.repository.FontProcessingJobRepository;
 import glym.glym_spring.domain.font.utils.ImageConverter;
 import glym.glym_spring.domain.font.validator.HandWritingImageValidator;
-import glym.glym_spring.domain.s3stroage.service.S3StorageService;
+import glym.glym_spring.global.infrastructure.storage.StorageService;
 import glym.glym_spring.domain.user.domain.User;
 import glym.glym_spring.domain.user.repository.UserRepository;
 import glym.glym_spring.global.exception.domain.CustomException;
 import glym.glym_spring.global.exception.domain.ImageValidationException;
+import glym.glym_spring.global.infrastructure.client.FontProcessingClient;
 import glym.glym_spring.global.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,10 +37,9 @@ import static glym.glym_spring.global.exception.errorcode.ErrorCode.*;
 @RequiredArgsConstructor
 @Slf4j
 public class FontService {
-    private final FontCreationRepository fontCreationRepository;
     private final HandWritingImageValidator handWritingImageValidator;
-    private final S3StorageService s3StorageService;
-    private final AIServerClient aiServerClient;
+    private final StorageService StorageService;
+    private final FontProcessingClient fontProcessingClient;
     private final FontProcessingJobRepository fontProcessingJobRepository;
     private final UserRepository userRepository;
     private final S3Presigner s3Presigner;
@@ -72,7 +73,15 @@ public class FontService {
 
         fontProcessingJobRepository.save(job);
 
-        aiServerClient.sendToAIServer(job);
+        fontProcessingClient.sendProcessingRequest(
+                AIRequestDto.builder()
+                        .jobId(uuid)
+                        .userId(userId)
+                        .fontName(fontName)
+                        .s3ImageKey(s3Key)
+                        .callbackUrl("http://localhost:8080/api/font/callback")
+                        .build()
+        );
 
         return uuid;
     }
@@ -81,16 +90,12 @@ public class FontService {
         //handWritingImageValidator.validate(handWritingImage);
         ImageConverter.convertToPng(handWritingImage);
 
-        return s3StorageService.storeImage(handWritingImage, uuid,userId);
+        return StorageService.storeImage(handWritingImage, uuid,userId);
 
     }
 
     public Iterable<JobStatusResponseDto> getJobStatusIterable(String jobId) {
-        //Long userId = SecurityUtils.getCurrentUserId();
-
-        //System.out.println("userId = " + userId);
         return new Iterable<JobStatusResponseDto>() {
-          //  private final Long userId = SecurityUtils.getCurrentUserId();
             @Override
             public Iterator<JobStatusResponseDto> iterator() {
                 return new Iterator<JobStatusResponseDto>() {

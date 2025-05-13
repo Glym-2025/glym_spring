@@ -1,12 +1,11 @@
-package glym.glym_spring.domain.s3stroage.service;
+package glym.glym_spring.global.infrastructure.storage;
 
 import com.amazonaws.services.s3.AmazonS3;
-
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import glym.glym_spring.global.exception.errorcode.ErrorCode;
 import glym.glym_spring.global.exception.domain.CustomException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,9 +13,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+import static glym.glym_spring.global.exception.errorcode.ErrorCode.IMAGE_SAVE_ERROR;
+
 @Service
 @RequiredArgsConstructor
-public class S3StorageService {
+@Slf4j
+public class StorageService {
+
     private final AmazonS3 s3Client;
 
     @Value("${cloud.aws.s3.bucket-name}")
@@ -24,24 +27,27 @@ public class S3StorageService {
 
     public String storeImage(MultipartFile file, String uuid, Long userId) {
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+        if (extension == null || extension.isEmpty()) {
+            log.error("Invalid file extension for file: {}", file.getOriginalFilename());
+            throw new CustomException(IMAGE_SAVE_ERROR);
+        }
+
+        String key = String.format("%s/%s.%s", userId, uuid, extension);
         String timestamp = String.valueOf(System.currentTimeMillis());
-        String key = String.format("%s.%s", uuid,  extension);
 
         try {
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentLength(file.getSize());
             metadata.setContentType(file.getContentType());
             metadata.addUserMetadata("uploadTime", timestamp);
-            s3Client.putObject(new PutObjectRequest(
-                    bucketName,
-                    key,
-                    file.getInputStream(),
-                    metadata
-            ));
+
+            s3Client.putObject(new PutObjectRequest(bucketName, key, file.getInputStream(), metadata));
+            log.info("Successfully uploaded image to S3. key: s3://handwritingImage/{}/{}", bucketName, key);
 
             return String.format("s3://%s/%s", bucketName, key);
         } catch (IOException e) {
-            throw new CustomException(ErrorCode.IMAGE_SAVE_ERROR);
+            log.error("Failed to upload image to S3. key: s3://{}/{}, error: {}", bucketName, key, e.getMessage());
+            throw new CustomException(IMAGE_SAVE_ERROR);
         }
     }
 }

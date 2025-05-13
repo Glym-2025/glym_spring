@@ -16,7 +16,7 @@ public class SecurityUrls {
             "/signup/**", // 회원가입
             //"/font/**",
             // Swagger
-            "/api/callback",
+            "/api/font/callback",
             "/swagger-ui/**",
             "/v3/api-docs/**",
             "/swagger-resources/**",

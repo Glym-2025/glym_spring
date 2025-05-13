@@ -1,4 +1,4 @@
-package glym.glym_spring.domain.aiserverclient.dto;
+package glym.glym_spring.domain.font.dto;
 
 import lombok.*;
 
@@ -15,5 +15,4 @@ public class AIRequestDto {
     private String  jobId;
 
     //create 타임,userId, 작업상태
-
 }
