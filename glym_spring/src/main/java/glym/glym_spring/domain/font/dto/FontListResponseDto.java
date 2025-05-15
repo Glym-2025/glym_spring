@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 public class FontListResponseDto {
     private Long id;
     private String fontName;
+    private String fontDescription;
     private LocalDateTime createdAt;
     private String fontUrl;
 }

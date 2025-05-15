@@ -59,7 +59,8 @@ public enum ErrorCode {
     AI_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "ai.server.error"),
     AI_CONNECTION_ERROR(HttpStatus.REQUEST_TIMEOUT, "ai.server.connection.error"),
     FONT_NAME_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "font.name.alreadyExists"),
-    FONT_CREATION_LIMIT_EXCEEDED(HttpStatus.FORBIDDEN, "font.creation.limit.exceeded");
+    FONT_CREATION_LIMIT_EXCEEDED(HttpStatus.FORBIDDEN, "font.creation.limit.exceeded"),
+    FONT_NOT_FOUND(HttpStatus.NOT_FOUND, "font.notFound");
     private final HttpStatus status;
     private final String message;
 

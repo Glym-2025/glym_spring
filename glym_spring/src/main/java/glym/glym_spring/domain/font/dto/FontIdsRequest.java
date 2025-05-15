@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FontIdRequest {
+public class FontIdsRequest {
     @Schema(description = "선택된 폰트 ID 목록")
     private List<Long> fontIds;
 }

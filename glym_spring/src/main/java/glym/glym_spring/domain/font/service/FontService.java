@@ -2,10 +2,7 @@ package glym.glym_spring.domain.font.service;
 
 import glym.glym_spring.domain.font.domain.FontCreation;
 import glym.glym_spring.domain.font.domain.FontProcessingJob;
-import glym.glym_spring.domain.font.dto.AIRequestDto;
-import glym.glym_spring.domain.font.dto.FontCreateRequest;
-import glym.glym_spring.domain.font.dto.FontListResponseDto;
-import glym.glym_spring.domain.font.dto.JobStatusResponseDto;
+import glym.glym_spring.domain.font.dto.*;
 import glym.glym_spring.domain.font.repository.FontCreationRepository;
 import glym.glym_spring.domain.font.repository.FontProcessingJobRepository;
 import glym.glym_spring.domain.font.utils.ImageConverter;
@@ -151,9 +148,68 @@ public class FontService {
                         .id(font.getId())
                         .fontName(font.getFontName())
                         .createdAt(font.getCreatedAt())
+                        .fontDescription(font.getFontDescription())
                         .fontUrl(storageService.generatePresignedUrl(font.getS3FontKey()))
                         .build())
                 .collect(Collectors.toList());
+    }
+    @Transactional(readOnly = true)
+    public List<FontDownloadResponseDto> getDownloadUrlsForFonts(List<Long> fontIds) {
+        Long userId = SecurityUtils.getCurrentUserId();
+
+        // 사용자가 소유한 폰트만 필터링하여 가져오기
+        List<FontCreation> fonts = fontCreationRepository.findAllById(fontIds)
+                .stream()
+                .filter(font -> font.getUser().getId().equals(userId))
+                .collect(Collectors.toList());
+
+        if (fonts.isEmpty()) {
+            throw new CustomException(FONT_NOT_FOUND);
+        }
+
+        return fonts.stream()
+                .map(font -> FontDownloadResponseDto.builder()
+                        .id(font.getId())
+                        .fontName(font.getFontName())
+                        .downloadUrl(storageService.generatePresignedUrl(font.getS3FontKey()))
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void deleteFonts(List<Long> fontIds) {
+        Long userId = SecurityUtils.getCurrentUserId();
+
+        // 사용자가 소유한 폰트만 필터링하여 가져오기
+        List<FontCreation> fonts = fontCreationRepository.findAllById(fontIds)
+                .stream()
+                .filter(font -> font.getUser().getId().equals(userId))
+                .collect(Collectors.toList());
+
+        if (fonts.isEmpty()) {
+            throw new CustomException(FONT_NOT_FOUND);
+        }
+
+        // 폰트 삭제
+        fontCreationRepository.deleteAll(fonts);
+
+        // S3에서 관련 파일 삭제 (선택적)
+        for (FontCreation font : fonts) {
+            try {
+                if (font.getS3FontKey() != null) {
+                    storageService.deleteFile(font.getS3FontKey());
+                }
+                if (font.getS3ImageKey() != null) {
+                    storageService.deleteFile(font.getS3ImageKey());
+                }
+            } catch (Exception e) {
+                log.error("S3에서 파일 삭제 중 오류 발생: fontId={}, error={}", font.getId(), e.getMessage());
+                // 파일 삭제 실패해도 계속 진행
+            }
+        }
+
+        // 사용자의 폰트 카운트 업데이트
+
     }
 }
 

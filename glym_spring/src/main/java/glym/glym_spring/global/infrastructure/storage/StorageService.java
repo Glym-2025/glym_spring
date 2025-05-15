@@ -48,7 +48,7 @@ public class StorageService {
             s3Client.putObject(new PutObjectRequest(bucketName, key, file.getInputStream(), metadata));
             log.info("Successfully uploaded image to S3. key: s3://handwritingImage/{}/{}", bucketName, key);
 
-            return String.format("s3://handwritingImage/%s/%s", bucketName, key);
+            return String.format("s3://%s/%s", bucketName, key);
         } catch (IOException e) {
             log.error("Failed to upload image to S3. key: s3://{}/{}, error: {}", bucketName, key, e.getMessage());
             throw new CustomException(IMAGE_SAVE_ERROR);
@@ -75,5 +75,14 @@ public class StorageService {
                 .build();
         return s3Presigner.presignGetObject(presignRequest).url().toString();
     }
-
+    public String deleteFile(String objectKey) {
+        try {
+            s3Client.deleteObject(bucketName, objectKey);
+            log.info("Successfully deleted file from S3. key: s3://{}/{}", bucketName, objectKey);
+            return "File deleted successfully";
+        } catch (Exception e) {
+            log.error("Failed to delete file from S3. key: s3://{}/{}, error: {}", bucketName, objectKey, e.getMessage());
+            throw new CustomException(IMAGE_SAVE_ERROR);
+        }
+    }
 }
