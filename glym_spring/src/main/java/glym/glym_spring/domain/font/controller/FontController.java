@@ -36,11 +36,6 @@ public class FontController implements FontControllerDocs {
         String message = messageSource.getMessage("font.created.success", null, Locale.getDefault());
         return ResponseEntity.ok(new SuccessResponse(message,jobId));
     }
-    @Override
-    @GetMapping("/fonts")
-    public ResponseEntity<?> getUserFonts() {
-        return ResponseEntity.ok(fontService.getUserFonts());
-    }
 
     @Override
     @GetMapping(value = "/{jobId}/status", produces = "text/event-stream")
@@ -72,5 +67,12 @@ public class FontController implements FontControllerDocs {
         event.append("}\n\n");
         return event.toString();
     }
+    @Override
+    @GetMapping("/fonts")
+    public ResponseEntity<?> getUserFonts() {
+        return ResponseEntity.ok(fontService.getUserFonts());
+    }
+
+
 
 }

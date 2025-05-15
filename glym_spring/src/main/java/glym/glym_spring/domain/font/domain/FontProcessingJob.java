@@ -31,6 +31,9 @@ public class FontProcessingJob {
     @Column(name = "font_name", nullable = false)
     private String fontName;
 
+    @Column(name= "font_description", nullable = false)
+    private String fontDescription;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private JobStatus status;

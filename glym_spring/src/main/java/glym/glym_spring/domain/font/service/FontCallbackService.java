@@ -76,6 +76,7 @@ public class FontCallbackService {
         FontCreation fontCreation = FontCreation.builder()
                 .fontName(job.getFontName())
                 .user(job.getUser())
+                .fontDescription(job.getFontDescription())
                 .s3FontKey(result.getS3FontPath())
                 .s3ImageKey(job.getS3ImageKey())
                 .build();

@@ -61,6 +61,7 @@ public class FontService {
         String uuid = UUID.randomUUID().toString();
         String fontName = request.getFontName();
         MultipartFile handWritingImage = request.getHandWritingImage();
+        String fontDescription = request.getFontDescription();
 
         String s3Key = processingImage(handWritingImage,userId,uuid);
 
@@ -68,6 +69,7 @@ public class FontService {
                 .status(PROCESSING)
                 .user(user)
                 .fontName(fontName)
+                .fontDescription(fontDescription)
                 .s3ImageKey(s3Key)
                 .jobId(uuid)
                 .build();
@@ -78,6 +80,7 @@ public class FontService {
                         .jobId(uuid)
                         .userId(userId)
                         .fontName(fontName)
+
                         .s3ImageKey(s3Key)
                         .callbackUrl("http://localhost:8080/api/font/callback")
                         .build()

@@ -25,8 +25,8 @@ public class FontCreation {
     @Column(name = "font_name", nullable = false)
     private String fontName;
 
-//    @Column(name = "description")
-//    private String description;
+    @Column(name = "font_description")
+    private String fontDescription;
 
     @Column(name = "s3_font_key")
     private String s3FontKey;
