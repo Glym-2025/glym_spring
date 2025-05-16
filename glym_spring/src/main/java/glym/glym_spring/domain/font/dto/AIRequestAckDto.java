@@ -1,4 +1,4 @@
-package glym.glym_spring.domain.aiserverclient.dto;
+package glym.glym_spring.domain.font.dto;
 
 
 import lombok.AllArgsConstructor;

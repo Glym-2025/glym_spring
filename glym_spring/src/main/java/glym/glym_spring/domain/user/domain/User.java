@@ -47,6 +47,9 @@ public class User {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @Column(name = "font_count", nullable = false)
+    private int fontCount = 0;
+
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
@@ -79,12 +82,14 @@ public class User {
         updatedAt = LocalDateTime.now();
     }
 
-    public void updateProfile(String username, String phone, String profileImageURL) {
-        this.username = username;
-        this.phone = phone;
-        this.profileImageURL = profileImageURL;
+
+    public void incrementFontCount() {
+        this.fontCount++;
     }
 
+    public boolean canCreateFont(int maxFonts) {
+        return this.fontCount < maxFonts;
+    }
 
 }
 

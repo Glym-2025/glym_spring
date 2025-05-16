@@ -71,8 +71,9 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
                                 "/swagger-custom.css",
                                 "/static/**",
-                                "/api/callback").permitAll()
-                        .requestMatchers("/font/**").authenticated()
+                                "/api/font/callback",
+                                "api/font/**").permitAll()
+                        .requestMatchers("/api/font/**").authenticated()
 
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated())

@@ -1,6 +1,7 @@
 package glym.glym_spring.global.exception;
 
 import glym.glym_spring.global.dto.ApiResponse;
+import glym.glym_spring.global.exception.domain.EmailException;
 import glym.glym_spring.global.exception.errorcode.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -10,8 +11,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 @Slf4j
 public class CustomExceptionHandler {
-    @ExceptionHandler(CustomException.class)
-    public ResponseEntity<ApiResponse<EmailErrorResponse>> handleCustomException(CustomException e){
+    @ExceptionHandler(EmailException.class)
+    public ResponseEntity<ApiResponse<EmailErrorResponse>> handleCustomException(EmailException e){
         log.error("CustomException 발생: {}", e.getMessage(), e);
 
         ErrorCode errorCode = e.getErrorCode();

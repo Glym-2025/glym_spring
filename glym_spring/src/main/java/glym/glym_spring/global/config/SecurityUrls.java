@@ -14,9 +14,9 @@ public class SecurityUrls {
             "/api/auth/send-email",
             "/api/auth/verify-email",
             "/api/signup/**", // 회원가입
-            //"/font/**",
+            "/font/**",
             // Swagger
-            "/api/callback",
+            "/api/font/callback",
             "/swagger-ui/**",
             "/v3/api-docs/**",
             "/swagger-resources/**",

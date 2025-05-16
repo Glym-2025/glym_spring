@@ -1,8 +1,6 @@
 package glym.glym_spring.domain.font.docs;
 
-import glym.glym_spring.domain.font.dto.FontCreateRequest;
-import glym.glym_spring.domain.font.dto.JobStatusResponseDto;
-import glym.glym_spring.domain.font.dto.SuccessResponse;
+import glym.glym_spring.domain.font.dto.*;
 import glym.glym_spring.global.exception.ErrorResponse;
 import glym.glym_spring.global.exception.domain.ImageValidationException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,7 +13,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import reactor.core.publisher.Flux;
@@ -145,4 +146,144 @@ public interface FontControllerDocs {
             @Parameter(description = "작업 ID", required = true, example = "작업 uuid")
             @PathVariable String jobId
     );
+
+    @Operation(
+            summary = "사용자 폰트 목록 조회",
+            description = """
+        현재 로그인한 사용자가 생성한 모든 폰트 목록을 반환합니다.
+        
+        **응답**
+        - 200 OK: 폰트 목록 반환
+            [
+              {
+                "id": 1,
+                "fontName": "나의 첫 폰트",
+                "createdAt": "2023-05-13T14:30:45",
+                "fontUrl": "https://my-bucket.s3.amazonaws.com/fonts/user_1/font_1.ttf?presigned"
+              },
+              ...
+            ]
+        - 401 Unauthorized: 인증되지 않은 사용자
+        - 500 Internal Server Error: 서버 오류 발생
+        """
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "폰트 목록 조회 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = FontListResponseDto.class, type = "array")
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "인증되지 않은 사용자",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "서버 오류",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class)
+                    )
+            )
+    })
+    @GetMapping("/fonts")
+    ResponseEntity<?> getUserFonts();
+    @Operation(
+            summary = "선택한 폰트 다운로드",
+            description = """
+        선택한 폰트들의 다운로드 URL을 제공합니다.
+        
+        **응답**
+        - 200 OK: 선택한 폰트들의 다운로드 URL 목록 반환
+            [
+              {
+                "id": 1,
+                "fontName": "나의 첫 폰트",
+                "downloadUrl": "https://my-bucket.s3.amazonaws.com/fonts/user_1/font_1.ttf?presigned"
+              },
+              ...
+            ]
+        - 400 Bad Request: 잘못된 요청
+        - 404 Not Found: 폰트를 찾을 수 없음
+        """
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "폰트 다운로드 URL 생성 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = FontDownloadResponseDto.class, type = "array")
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "잘못된 요청",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "폰트 없음",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class)
+                    )
+            )
+    })
+    @PostMapping("/fonts/download")
+    ResponseEntity<?> downloadFonts(@RequestBody FontIdsRequest request);
+
+    @Operation(
+            summary = "선택한 폰트 삭제",
+            description = """
+        선택한 폰트들을 삭제합니다. 폰트 파일과 관련 이미지 파일이 모두 삭제됩니다.
+        
+        **응답**
+        - 200 OK: 폰트 삭제 성공
+            {
+              "message": "폰트가 성공적으로 삭제되었습니다.",
+              "data": null
+            }
+        - 400 Bad Request: 잘못된 요청
+        - 404 Not Found: 폰트를 찾을 수 없음
+        """
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "폰트 삭제 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = SuccessResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "잘못된 요청",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "폰트 없음",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class)
+                    )
+            )
+    })
+    @DeleteMapping("/fonts/delete")
+    ResponseEntity<?> deleteFonts(@RequestBody FontIdsRequest request);
 }

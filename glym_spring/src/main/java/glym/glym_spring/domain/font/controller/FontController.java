@@ -1,9 +1,7 @@
 package glym.glym_spring.domain.font.controller;
 
 import glym.glym_spring.domain.font.docs.FontControllerDocs;
-import glym.glym_spring.domain.font.dto.FontCreateRequest;
-import glym.glym_spring.domain.font.dto.JobStatusResponseDto;
-import glym.glym_spring.domain.font.dto.SuccessResponse;
+import glym.glym_spring.domain.font.dto.*;
 import glym.glym_spring.domain.font.service.FontService;
 import glym.glym_spring.global.exception.domain.ImageValidationException;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Locale;
 
 @Controller
@@ -67,5 +66,26 @@ public class FontController implements FontControllerDocs {
         event.append("}\n\n");
         return event.toString();
     }
+    @Override
+    @GetMapping("/fonts")
+    public ResponseEntity<?> getUserFonts() {
+        return ResponseEntity.ok(fontService.getUserFonts());
+    }
+    @Override
+    @PostMapping("/fonts/download")
+    public ResponseEntity<?> downloadFonts(@RequestBody FontIdsRequest request) {
+        List<FontDownloadResponseDto> downloads = fontService.getDownloadUrlsForFonts(request.getFontIds());
+        return ResponseEntity.ok(downloads);
+    }
+
+    @Override
+    @DeleteMapping("/fonts/delete")
+    public ResponseEntity<?> deleteFonts(@RequestBody FontIdsRequest request) {
+        fontService.deleteFonts(request.getFontIds());
+        String message = messageSource.getMessage("font.delete.success", null, Locale.getDefault());
+        return ResponseEntity.ok(new SuccessResponse(message, null));
+    }
+
+
 
 }
