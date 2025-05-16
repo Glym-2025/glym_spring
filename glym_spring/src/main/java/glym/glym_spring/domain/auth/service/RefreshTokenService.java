@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -111,5 +112,12 @@ public class RefreshTokenService {
         }
 
         return savedToken;
+    }
+
+    @Scheduled(cron = "0 0 * * * *")// 매 시간 정각에 실행
+    public void deleteExpiredRefreshTokens() {
+        LocalDateTime now = LocalDateTime.now();
+        refreshTokenRepository.deleteByExpiresAtBefore(now);
+        log.info("Expired refresh tokens deleted");
     }
 }

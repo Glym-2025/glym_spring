@@ -82,6 +82,7 @@ public class User {
         updatedAt = LocalDateTime.now();
     }
 
+
     public void incrementFontCount() {
         this.fontCount++;
     }
