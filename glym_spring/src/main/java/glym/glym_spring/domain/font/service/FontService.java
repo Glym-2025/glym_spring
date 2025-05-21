@@ -193,20 +193,7 @@ public class FontService {
         // 폰트 삭제
         fontCreationRepository.deleteAll(fonts);
 
-        // S3에서 관련 파일 삭제 (선택적)
-        for (FontCreation font : fonts) {
-            try {
-                if (font.getS3FontKey() != null) {
-                    storageService.deleteFile(font.getS3FontKey());
-                }
-                if (font.getS3ImageKey() != null) {
-                    storageService.deleteFile(font.getS3ImageKey());
-                }
-            } catch (Exception e) {
-                log.error("S3에서 파일 삭제 중 오류 발생: fontId={}, error={}", font.getId(), e.getMessage());
-                // 파일 삭제 실패해도 계속 진행
-            }
-        }
+        
 
         // 사용자의 폰트 카운트 업데이트
 
