@@ -70,7 +70,7 @@ public class FontController implements FontControllerDocs {
             event.append(", \"errorMessage\": \"").append(dto.getErrorMessage()).append("\"");
         }
         if (dto.getFontId() != null) {
-            event.append(", \"errorMessage\": \"").append(dto.getFontId()).append("\"");
+            event.append(", \"fontId\": \"").append(dto.getFontId()).append("\"");
         }
         event.append("}\n\n");
         return event.toString();

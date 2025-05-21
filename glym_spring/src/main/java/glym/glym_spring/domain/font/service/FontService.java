@@ -125,7 +125,7 @@ public class FontService {
                         String errorMessage = null;
 
                         if ("COMPLETED".equals(status) && job.getS3FontKey() != null) {
-
+                            fontUrl = storageService.generatePresignedUrl(job.getS3FontKey());
                             fontId=fontCreationRepository.findByS3FontKey(job.getS3FontKey());
 
 
