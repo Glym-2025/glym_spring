@@ -91,5 +91,11 @@ public class User {
         return this.fontCount < maxFonts;
     }
 
+    public void updateProfile(String username, String phone, String profileImageURL) {
+        this.username = username;
+        this.phone = phone;
+        this.profileImageURL = profileImageURL;
+    }
+
 }
 
