@@ -43,9 +43,7 @@ public class FontService {
     private final UserRepository userRepository;
     private final FontValidator fontValidator;
 
-
     public String createFont(FontCreateRequest request) throws IOException, ImageValidationException {
-
 
         Long userId = SecurityUtils.getCurrentUserId();
         User user = userRepository.findById(userId)
@@ -119,18 +117,21 @@ public class FontService {
                         }
                         String status = job.getStatus().toString().toUpperCase();
                         String fontUrl = null;
+                        Long fontId= null;
                         String errorMessage = null;
 
                         if ("COMPLETED".equals(status) && job.getS3FontKey() != null) {
-                            fontUrl = storageService.generatePresignedUrl(job.getS3FontKey());
-                            System.out.println("good job");
+                            
+                            fontId=fontCreationRepository.findByS3FontKey(job.getS3FontKey());
+
+
                             running = false; // 완료 시 종료
                         } else if ("FAILED".equals(status)) {
                             errorMessage = job.getErrorMessage();
                             running = false; // 실패 시 종료
                         }
 
-                        return new JobStatusResponseDto(status, fontUrl, errorMessage);
+                        return new JobStatusResponseDto(status, fontUrl, errorMessage,fontId);
                     }
                 };
             }

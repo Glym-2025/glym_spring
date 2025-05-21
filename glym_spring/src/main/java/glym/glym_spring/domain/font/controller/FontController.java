@@ -65,6 +65,9 @@ public class FontController implements FontControllerDocs {
         if (dto.getErrorMessage() != null) {
             event.append(", \"errorMessage\": \"").append(dto.getErrorMessage()).append("\"");
         }
+        if (dto.getFontId() != null) {
+            event.append(", \"errorMessage\": \"").append(dto.getFontId()).append("\"");
+        }
         event.append("}\n\n");
         return event.toString();
     }
@@ -88,6 +91,7 @@ public class FontController implements FontControllerDocs {
         return ResponseEntity.ok(new SuccessResponse(message, null));
     }
 
+    @Override
     @GetMapping("/fonts/download/{fontId}")
     public ResponseEntity<byte[]> downloadFont(@PathVariable Long fontId) {
         FontDownloadDto downloadDto = fontService.downloadFont(fontId);
@@ -98,6 +102,4 @@ public class FontController implements FontControllerDocs {
                         "attachment; filename=\"" + downloadDto.getFontName() + ".ttf\"")
                 .body(downloadDto.getFontData());
     }
-
-
 }

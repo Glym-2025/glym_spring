@@ -71,8 +71,8 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
                                 "/swagger-custom.css",
                                 "/static/**",
-                                "/api/font/callback",
-                                "api/font/**").permitAll()
+                                "/api/font/*/status",
+                                "/api/font/callback").permitAll()
                         .requestMatchers("/api/font/**").authenticated()
 
                         .requestMatchers("/admin").hasRole("ADMIN")
@@ -109,7 +109,8 @@ public class SecurityConfig {
                 "http://ec2-15-164-102-179.ap-northeast-2.compute.amazonaws.com",
                 "http://ec2-15-164-102-179.ap-northeast-2.compute.amazonaws.com:8080",
                 "http://www.glymfont.store",
-                "https://www.glymfont.store")); // 허용할 오리진 TODO: CORS 경로 설정 "http://localhost:5173"
+                "https://www.glymfont.store",
+                "https://glymfont.store")); // 허용할 오리진 TODO: CORS 경로 설정 "http://localhost:5173"
 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")); // 허용할 HTTP 메서드
         configuration.setAllowCredentials(true); // 인증 정보 포함 여부
