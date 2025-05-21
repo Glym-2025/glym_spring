@@ -1,5 +1,6 @@
 package glym.glym_spring.domain.font.docs;
 
+import glym.glym_spring.domain.auth.dto.CustomUserDetails;
 import glym.glym_spring.domain.font.dto.*;
 import glym.glym_spring.global.exception.ErrorResponse;
 import glym.glym_spring.global.exception.domain.ImageValidationException;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -78,6 +80,7 @@ public interface FontControllerDocs {
             )
     })
     ResponseEntity<?> createFont(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @RequestBody(
                     description = "폰트 생성 요청",
                     required = true,
@@ -194,7 +197,7 @@ public interface FontControllerDocs {
             )
     })
     @GetMapping("/fonts")
-    ResponseEntity<?> getUserFonts();
+    ResponseEntity<?> getUserFonts(@AuthenticationPrincipal CustomUserDetails customUserDetails);
     @Operation(
             summary = "선택한 폰트 다운로드",
             description = """
@@ -241,7 +244,7 @@ public interface FontControllerDocs {
             )
     })
     @PostMapping("/fonts/download")
-    ResponseEntity<?> downloadFonts(@RequestBody FontIdsRequest request);
+    ResponseEntity<?> downloadFonts(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody FontIdsRequest request);
 
     @Operation(
             summary = "선택한 폰트 삭제",
@@ -285,5 +288,5 @@ public interface FontControllerDocs {
             )
     })
     @DeleteMapping("/fonts/delete")
-    ResponseEntity<?> deleteFonts(@RequestBody FontIdsRequest request);
+    ResponseEntity<?> deleteFonts(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody FontIdsRequest request);
 }

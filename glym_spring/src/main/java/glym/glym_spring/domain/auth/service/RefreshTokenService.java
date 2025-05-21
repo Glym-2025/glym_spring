@@ -64,7 +64,7 @@ public class RefreshTokenService {
 
         ResponseCookie rtCookie = ResponseCookie.from("refreshToken", newRefreshToken)
                 .httpOnly(true)
-                .secure(false)
+                .secure(true)
                 .path("/")
                 .maxAge(Duration.ofMillis(jwtUtil.getRefreshExpirationTime()))
                 .build();
@@ -115,6 +115,7 @@ public class RefreshTokenService {
     }
 
     @Scheduled(cron = "0 0 * * * *")// 매 시간 정각에 실행
+    @Transactional
     public void deleteExpiredRefreshTokens() {
         LocalDateTime now = LocalDateTime.now();
         refreshTokenRepository.deleteByExpiresAtBefore(now);

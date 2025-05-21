@@ -1,6 +1,0 @@
-spring:
-  datasource:
-    url: jdbc:mysql://15.164.102.179:3306/glym_spring_test?useSSL=false&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8
-    username: root
-    password: 7904
-    driver-class-name: com.mysql.cj.jdbc.Driver
