@@ -23,11 +23,11 @@ public class ApiResponse<T> {
         this.message = message;
     }
 
-    public static <T> ApiResponse<T> success(T user, String message) {
-        return new ApiResponse<>(user, message);
+    public static <T> ApiResponse<T> success(T data, String message) {
+        return new ApiResponse<>(data, message);
     }
 
     public static <T> ApiResponse<T> error(T data, int status, String message) {
         return new ApiResponse<>(data, status, message);
     }
-    }
+}

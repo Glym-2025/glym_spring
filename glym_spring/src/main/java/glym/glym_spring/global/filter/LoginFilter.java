@@ -96,7 +96,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
                 .httpOnly(true)
                 .secure(true)
-                .sameSite("Lax")
+                .sameSite("None")
                 .path("/")
                 .maxAge(jwtUtil.getRefreshExpirationTime() / 1000)
                 .build();
