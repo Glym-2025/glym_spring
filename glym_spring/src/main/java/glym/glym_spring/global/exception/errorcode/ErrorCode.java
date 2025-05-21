@@ -58,6 +58,9 @@ public enum ErrorCode {
     AI_SERVER_TIMEOUT(HttpStatus.GATEWAY_TIMEOUT, "ai.server.timeout"),
     AI_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "ai.server.error"),
     AI_CONNECTION_ERROR(HttpStatus.REQUEST_TIMEOUT, "ai.server.connection.error"),
+    FILE_DOWNLOAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "파일 다운로드 중 오류가 발생했습니다."),
+    FILE_PROCESSING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "파일 처리 중 오류가 발생했습니다."),
+    UNAUTHORIZED_ACCESS(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."),
     FONT_NAME_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "font.name.alreadyExists"),
     FONT_CREATION_LIMIT_EXCEEDED(HttpStatus.FORBIDDEN, "font.creation.limit.exceeded"),
     FONT_NOT_FOUND(HttpStatus.NOT_FOUND, "font.notFound");

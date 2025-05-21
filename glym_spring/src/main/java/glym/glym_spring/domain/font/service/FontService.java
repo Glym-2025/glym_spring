@@ -198,5 +198,53 @@ public class FontService {
         // 사용자의 폰트 카운트 업데이트
 
     }
+    @Transactional(readOnly = true)
+    public FontDownloadDto downloadFont(Long fontId) {
+        Long userId = SecurityUtils.getCurrentUserId();
+
+        // 폰트 찾기
+        FontCreation font = fontCreationRepository.findById(fontId)
+                .orElseThrow(() -> new CustomException(FONT_NOT_FOUND));
+
+        // 사용자 권한 확인
+        if (!font.getUser().getId().equals(userId)) {
+            throw new CustomException(UNAUTHORIZED_ACCESS);
+        }
+
+        // S3에서 폰트 파일 가져오기
+        byte[] fontData = storageService.downloadFile(font.getS3FontKey());
+
+        return FontDownloadDto.builder()
+                .fontName(font.getFontName())
+                .fontData(fontData)
+                .contentType("font/ttf") // TTF 파일 가정, 실제 폰트 형식에 맞게 조정 필요
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    public List<FontDownloadDto> downloadFonts(List<Long> fontIds) {
+        Long userId = SecurityUtils.getCurrentUserId();
+
+        // 사용자가 소유한 폰트만 필터링하여 가져오기
+        List<FontCreation> fonts = fontCreationRepository.findAllById(fontIds)
+                .stream()
+                .filter(font -> font.getUser().getId().equals(userId))
+                .collect(Collectors.toList());
+
+        if (fonts.isEmpty()) {
+            throw new CustomException(FONT_NOT_FOUND);
+        }
+
+        return fonts.stream()
+                .map(font -> {
+                    byte[] fontData = storageService.downloadFile(font.getS3FontKey());
+                    return FontDownloadDto.builder()
+                            .fontName(font.getFontName())
+                            .fontData(fontData)
+                            .contentType("font/ttf") // TTF 파일 가정
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
 }
 

@@ -6,6 +6,8 @@ import glym.glym_spring.domain.font.service.FontService;
 import glym.glym_spring.global.exception.domain.ImageValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -86,6 +88,16 @@ public class FontController implements FontControllerDocs {
         return ResponseEntity.ok(new SuccessResponse(message, null));
     }
 
+    @GetMapping("/fonts/download/{fontId}")
+    public ResponseEntity<byte[]> downloadFont(@PathVariable Long fontId) {
+        FontDownloadDto downloadDto = fontService.downloadFont(fontId);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(downloadDto.getContentType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" + downloadDto.getFontName() + ".ttf\"")
+                .body(downloadDto.getFontData());
+    }
 
 
 }
