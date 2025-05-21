@@ -31,6 +31,7 @@ public class FontCallbackService {
     private final FontProcessingClient fontProcessingClient;
     private final UserRepository userRepository;
 
+
     @Value("${backend-server.callback-url}")
     private String callbackUrl;
 
