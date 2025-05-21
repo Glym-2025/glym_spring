@@ -17,7 +17,6 @@ import glym.glym_spring.global.infrastructure.client.FontProcessingClient;
 import glym.glym_spring.global.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,8 +44,10 @@ public class FontService {
     private final FontValidator fontValidator;
 
 
-    public String createFont(Long userId, FontCreateRequest request) throws IOException, ImageValidationException {
+    public String createFont(FontCreateRequest request) throws IOException, ImageValidationException {
 
+
+        Long userId = SecurityUtils.getCurrentUserId();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
 
@@ -78,7 +79,7 @@ public class FontService {
                         .fontName(fontName)
 
                         .s3ImageKey(s3Key)
-                        .callbackUrl("https://www.glymfont.store/api/font/callback")
+                        .callbackUrl("http://localhost:8080/api/font/callback")
                         .build()
         );
 
@@ -137,8 +138,8 @@ public class FontService {
     }
 
     @Transactional(readOnly = true)
-    public List<FontListResponseDto> getUserFonts(Long userId) {
-
+    public List<FontListResponseDto> getUserFonts() {
+        Long userId = SecurityUtils.getCurrentUserId();
 
         List<FontCreation> fontCreations = fontCreationRepository.findByUserId(userId);
 
@@ -153,7 +154,8 @@ public class FontService {
                 .collect(Collectors.toList());
     }
     @Transactional(readOnly = true)
-    public List<FontDownloadResponseDto> getDownloadUrlsForFonts(Long userId, List<Long> fontIds) {
+    public List<FontDownloadResponseDto> getDownloadUrlsForFonts(List<Long> fontIds) {
+        Long userId = SecurityUtils.getCurrentUserId();
 
         // 사용자가 소유한 폰트만 필터링하여 가져오기
         List<FontCreation> fonts = fontCreationRepository.findAllById(fontIds)
@@ -175,7 +177,8 @@ public class FontService {
     }
 
     @Transactional
-    public void deleteFonts(Long userId, List<Long> fontIds) {
+    public void deleteFonts(List<Long> fontIds) {
+        Long userId = SecurityUtils.getCurrentUserId();
 
         // 사용자가 소유한 폰트만 필터링하여 가져오기
         List<FontCreation> fonts = fontCreationRepository.findAllById(fontIds)
@@ -190,6 +193,7 @@ public class FontService {
         // 폰트 삭제
         fontCreationRepository.deleteAll(fonts);
 
+        
 
         // 사용자의 폰트 카운트 업데이트
 
