@@ -1,5 +1,6 @@
 package glym.glym_spring.domain.font.controller;
 
+import glym.glym_spring.domain.auth.dto.CustomUserDetails;
 import glym.glym_spring.domain.font.docs.FontControllerDocs;
 import glym.glym_spring.domain.font.dto.*;
 import glym.glym_spring.domain.font.service.FontService;
@@ -9,6 +10,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -32,8 +34,10 @@ public class FontController implements FontControllerDocs {
 
     @Override
     @PostMapping("/upload")
-    public ResponseEntity<?> createFont(@ModelAttribute FontCreateRequest request) throws ImageValidationException, IOException {
-        String jobId = fontService.createFont(request);
+        public ResponseEntity<?> createFont(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+                                        @ModelAttribute FontCreateRequest request) throws ImageValidationException, IOException {
+        long userId = customUserDetails.getId();
+        String jobId = fontService.createFont(userId, request);
         String message = messageSource.getMessage("font.created.success", null, Locale.getDefault());
         return ResponseEntity.ok(new SuccessResponse(message,jobId));
     }
@@ -73,25 +77,27 @@ public class FontController implements FontControllerDocs {
     }
     @Override
     @GetMapping("/fonts")
-    public ResponseEntity<?> getUserFonts() {
-        return ResponseEntity.ok(fontService.getUserFonts());
+    public ResponseEntity<?> getUserFonts(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        return ResponseEntity.ok(fontService.getUserFonts(customUserDetails.getId()));
     }
     @Override
     @PostMapping("/fonts/download")
-    public ResponseEntity<?> downloadFonts(@RequestBody FontIdsRequest request) {
-        List<FontDownloadResponseDto> downloads = fontService.getDownloadUrlsForFonts(request.getFontIds());
+    public ResponseEntity<?> downloadFonts(   @AuthenticationPrincipal CustomUserDetails customUserDetails,
+                                              @RequestBody FontIdsRequest request) {
+        List<FontDownloadResponseDto> downloads = fontService.getDownloadUrlsForFonts(customUserDetails.getId(), request.getFontIds());
         return ResponseEntity.ok(downloads);
     }
 
     @Override
     @DeleteMapping("/fonts/delete")
-    public ResponseEntity<?> deleteFonts(@RequestBody FontIdsRequest request) {
-        fontService.deleteFonts(request.getFontIds());
+    public ResponseEntity<?> deleteFonts(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+                                         @RequestBody FontIdsRequest request) {
+        fontService.deleteFonts(customUserDetails.getId(), request.getFontIds());
         String message = messageSource.getMessage("font.delete.success", null, Locale.getDefault());
         return ResponseEntity.ok(new SuccessResponse(message, null));
     }
 
-    @Override
+    //@Override
     @GetMapping("/fonts/download/{fontId}")
     public ResponseEntity<byte[]> downloadFont(@PathVariable Long fontId) {
         FontDownloadDto downloadDto = fontService.downloadFont(fontId);

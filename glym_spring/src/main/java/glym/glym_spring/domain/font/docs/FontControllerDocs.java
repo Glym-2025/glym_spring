@@ -1,5 +1,6 @@
 package glym.glym_spring.domain.font.docs;
 
+import glym.glym_spring.domain.auth.dto.CustomUserDetails;
 import glym.glym_spring.domain.font.dto.*;
 import glym.glym_spring.global.exception.ErrorResponse;
 import glym.glym_spring.global.exception.domain.ImageValidationException;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -78,6 +80,7 @@ public interface FontControllerDocs {
             )
     })
     ResponseEntity<?> createFont(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @RequestBody(
                     description = "폰트 생성 요청",
                     required = true,
@@ -194,8 +197,7 @@ public interface FontControllerDocs {
             )
     })
     @GetMapping("/fonts")
-    ResponseEntity<?> getUserFonts();
-
+    ResponseEntity<?> getUserFonts(@AuthenticationPrincipal CustomUserDetails customUserDetails);
     @Operation(
             summary = "선택한 폰트 다운로드",
             description = """
@@ -242,7 +244,7 @@ public interface FontControllerDocs {
             )
     })
     @PostMapping("/fonts/download")
-    ResponseEntity<?> downloadFonts(@RequestBody FontIdsRequest request);
+    ResponseEntity<?> downloadFonts(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody FontIdsRequest request);
 
     @Operation(
             summary = "선택한 폰트 삭제",
@@ -286,50 +288,5 @@ public interface FontControllerDocs {
             )
     })
     @DeleteMapping("/fonts/delete")
-    ResponseEntity<?> deleteFonts(@RequestBody FontIdsRequest request);
-
-    @Operation(
-            summary = "단일 폰트 직접 다운로드",
-            description = """
-            폰트 ID를 통해 폰트 파일(.ttf)을 직접 다운로드합니다.
-            
-            **요청**
-            - fontId: 폰트 ID (경로 파라미터)
-            
-            **응답**
-            - 200 OK: 폰트 파일(.ttf) 다운로드
-            - 401 Unauthorized: 인증되지 않은 사용자 또는 권한 없음
-            - 404 Not Found: 폰트를 찾을 수 없음
-            """
-    )
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "폰트 파일 다운로드 성공",
-                    content = @Content(
-                            mediaType = "font/ttf"
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "인증되지 않은 사용자 또는 권한 없음",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorResponse.class)
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "폰트 없음",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorResponse.class)
-                    )
-            )
-    })
-    @GetMapping("/fonts/download/{fontId}")
-    ResponseEntity<byte[]> downloadFont(
-            @Parameter(description = "폰트 ID", required = true, example = "1")
-            @PathVariable Long fontId
-    );
+    ResponseEntity<?> deleteFonts(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody FontIdsRequest request);
 }
